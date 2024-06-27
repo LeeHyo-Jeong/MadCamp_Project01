@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
         length: 3, // 탭의 개수
         child: Scaffold(
           appBar: AppBar(
+            backgroundColor: Color(0xff98e0ff),
             title: Text("Application"),
             bottom: TabBar(
               tabs: [
