@@ -1,37 +1,35 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.le),
-    colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurp
-        useMaterial3: true,
+      home: DefaultTabController(
+        length: 3, // 탭의 개수
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('테스트'),
+            bottom: TabBar(
+              tabs: [
+                Tab(text: '나의 연락처'),
+                Tab(text: 'Tab 2'),
+                Tab(text: 'Tab 3'),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: [
+              Center(child: Text('전화번호부')),
+              Center(child: Text('Content for Tab 2')),
+              Center(child: Text('Content for Tab 3')),
+            ],
+          ),
+        ),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
