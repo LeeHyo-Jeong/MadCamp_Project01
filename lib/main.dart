@@ -12,19 +12,19 @@ class MyApp extends StatelessWidget {
         length: 3, // 탭의 개수
         child: Scaffold(
           appBar: AppBar(
-            title: Text('테스트'),
+            title: Text("Application"),
             bottom: TabBar(
               tabs: [
-                Tab(text: '나의 연락처'),
-                Tab(text: 'Tab 2'),
+                Tab(text: 'Contacts'),
+                Tab(text: 'Gallery'),
                 Tab(text: 'Tab 3'),
               ],
             ),
           ),
           body: TabBarView(
             children: [
-              Center(child: Text('전화번호부')),
-              Center(child: Text('Content for Tab 2')),
+              Center(child: Text('contact list')),
+              Center(child: Text('gallery')),
               Center(child: Text('Content for Tab 3')),
             ],
           ),

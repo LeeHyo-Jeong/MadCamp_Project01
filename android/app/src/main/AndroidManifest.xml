@@ -41,4 +41,7 @@
             <data android:mimeType="text/plain"/>
         </intent>
     </queries>
+
+    <!-- 연락처 열람하는 권한 추가하기: 읽기만 사용할 것이므로 read만 사용 -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 </manifest>
