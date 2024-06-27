@@ -2,83 +2,71 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:contacts_service/contacts_service.dart';
 
-class MyWidget extends StatefulWidget {
-  const MyWidget({super.key});
+class ContactsWidget extends StatefulWidget {
+  const ContactsWidget({super.key});
 
   @override
-  State<MyWidget> createState() => _MyWidgetState();
+  State<ContactsWidget> createState() => _ContactsWidgetState();
 }
 
-class _MyWidgetState extends State<MyWidget> {
+class _ContactsWidgetState extends State<ContactsWidget> {
   List<Contact>? _contacts = null; // ios 오류때문에 초기화 해야함
-  final TextEditingController _phoneNumberController = TextEditingController(); // Controller 선언 및 초기화
 
   // 연락처 가져오기 기능
   Future<void> getContacts() async {
-    if (await Permission.contacts.request().isGranted) {
+    var status = await Permission.contacts.status;
+    if(!status.isGranted){
+      // 권한 요청
+      if(await Permission.contacts.request().isGranted){
+        // 권한 허용, 연락처 가져오기
+        var contacts = await ContactsService.getContacts(
+          withThumbnails: false,
+        );
+        setState((){
+          _contacts = contacts.toList();
+        });
+      } else{
+        // 권한 거부
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Permission denied")));
+      }
+    } else{
+      // 이미 권한이 허용된 경우
       var contacts = await ContactsService.getContacts(
         withThumbnails: false,
       );
-
-      // 가져온 연락처 목록 변수에 할당
-      setState(() {
-        _contacts = contacts;
+      setState((){
+        _contacts = contacts.toList();
       });
-
-      // 연락처 목록 모달 열기
-      showModal();
-
-      // Iterate over the contacts and look for the phone number
-    } else {
-      // Permission denied, handle the error
     }
   }
 
-  // 연락처 모달 오픈
-  Future<void> showModal() async {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          child: ListView.builder(
-            itemCount: _contacts?.length,
-            itemBuilder: (BuildContext context, int index) {
-              Contact c = _contacts!.elementAt(index);
-              var userName = c.displayName;
-              var phoneNumber = c.phones?.first.value;
-              return TextButton(
-                onPressed: () {
-                  _phoneNumberController.text = phoneNumber.toString();
-                  Navigator.of(context).pop();
-                },
-                child: Text(userName ?? ""),
-              );
-            },
-          ),
-        );
-      },
-    );
+  @override
+  void initState(){
+    super.initState();
+    getContacts();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: ElevatedButton(
-        onPressed: () {
-          if (_contacts == null) {
-            getContacts(); // 최초로 가져오기
-          } else {
-            showModal(); // 한번 가져온 후 실행
-          }
-        },
-        child: Text(
-          '연락처에서 선택',
-          style: TextStyle(
-            fontSize: 13,
-            color: Theme.of(context).primaryColorDark,
-          ),
-        ),
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Contacts"),
       ),
+      body: _contacts == null ?
+          Center(child: CircularProgressIndicator())
+          : ListView.builder(
+        itemCount: _contacts?.length ?? 0,
+        itemBuilder: (BuildContext context, int index){
+          Contact contact = _contacts![index];
+          return ListTile(
+            subtitle: Text(
+              contact.phones?.isNotEmpty == true
+                  ? contact.phones!.first.value ?? "No Phone Number"
+                  : "No Phone Number",
+            ),
+          );
+        },
+      )
     );
   }
 }

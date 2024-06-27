@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:madcamp_project01/contact_list.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
           ),
           body: TabBarView(
             children: [
-              Center(child: Text('contact list')),
+              ContactsWidget(), // 연락처 위젯 사용
               Center(child: Text('gallery')),
               Center(child: Text('Content for Tab 3')),
             ],
