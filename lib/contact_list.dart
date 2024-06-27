@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:madcamp_project01/contact_detail.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:contacts_service/contacts_service.dart';
 
@@ -49,9 +50,6 @@ class _ContactsWidgetState extends State<ContactsWidget> {
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Contacts"),
-      ),
       body: _contacts == null ?
           Center(child: CircularProgressIndicator())
           : ListView.builder(
@@ -59,11 +57,22 @@ class _ContactsWidgetState extends State<ContactsWidget> {
         itemBuilder: (BuildContext context, int index){
           Contact contact = _contacts![index];
           return ListTile(
+            title: Text(
+              contact.displayName ?? "No Name"
+            ),
             subtitle: Text(
               contact.phones?.isNotEmpty == true
                   ? contact.phones!.first.value ?? "No Phone Number"
                   : "No Phone Number",
             ),
+            onTap: (){ // 전화번호를 누르면 상세 페이지로 이동
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ContactDetails(contact: contact),
+                )
+              );
+            }
           );
         },
       )
