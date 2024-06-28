@@ -30,7 +30,14 @@ class _ImageWidgetState extends State<ImageWidget> {
           type: RequestType.image
       );
 
-      List<AssetEntity> media = await albums[0].getAssetListPaged(page: 0, size: 100);
+      //List<AssetEntity> media = await albums[0].getAssetListPaged(page: 0, size: 100);
+      // 갤러리의 모든 사진 가져오기
+      final AssetPathEntity album = albums.first;
+      int imageCount = await album.assetCountAsync;
+      List<AssetEntity> media = await album.getAssetListRange(
+        start: 0,
+        end: imageCount,
+      );
 
       // _mediaList 업데이트 하고 UI 다시 빌드
       setState(() {
@@ -70,7 +77,7 @@ class _ImageWidgetState extends State<ImageWidget> {
               }
               else{
                 return Center(
-                    child: CircularProgressIndicator());
+                    child: CircularProgressIndicator(color: Color(0xff98e0ff)));
               }
             },
           );
