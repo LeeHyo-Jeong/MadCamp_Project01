@@ -89,19 +89,21 @@ class _ContactsWidgetState extends State<ContactsWidget> {
                           builder: (context) =>
                               ContactDetails(contact: contact),
                         ));
-                    getContacts();
+                    setState(() {});
                   },
                 );
               },
             ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          bool? shouldRefresh = await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => ContactNew(),
               ));
-          getContacts();
+          if (shouldRefresh == true) {
+            getContacts();
+          }
         },
         child: Icon(Icons.add),
       ),

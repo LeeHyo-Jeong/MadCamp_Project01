@@ -55,13 +55,14 @@ class _ContactNewState extends State<ContactNew> {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(context, false);
             },
           ),
           actions: [
             TextButton(
               onPressed: () {
                 addContact(firstname, lastname, email, phone); // 연락처가 추가된다.
+                Navigator.pop(context, true);
               },
               child: Text(
                 "save",
