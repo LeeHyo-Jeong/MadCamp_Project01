@@ -13,6 +13,7 @@ class ContactDetails extends StatelessWidget {
         ? phones.first.value ?? "No Phone Number"
         : "No Phone Number";
 
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
