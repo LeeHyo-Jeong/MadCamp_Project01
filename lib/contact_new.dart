@@ -44,6 +44,7 @@ class _ContactNewState extends State<ContactNew> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
+          backgroundColor: Color(0xfff7f2f9),
           title: Text(
             "New Contact",
             style: TextStyle(

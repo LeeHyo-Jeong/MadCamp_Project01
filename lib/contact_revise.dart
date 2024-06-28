@@ -70,6 +70,7 @@ class _ContactReviseState extends State<ContactRevise> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
+          backgroundColor: Color(0xfff7f2f9),
           title: Text(
             "Revise Contract",
             style: TextStyle(

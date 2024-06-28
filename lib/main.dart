@@ -61,7 +61,10 @@ class _HomePageState extends State<HomePage>
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xff98e0ff),
-          title: Text(_appBarTitle),
+          title: Text(
+            _appBarTitle
+          ),
+          centerTitle: true,
         ),
         body: TabBarView(
           controller: _tabController,

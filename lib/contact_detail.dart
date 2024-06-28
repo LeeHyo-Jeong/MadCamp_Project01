@@ -20,6 +20,7 @@ class ContactDetails extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
+          backgroundColor: Color(0xfff7f2f9),
           title: Text(
             "Contact",
             style: TextStyle(
