@@ -13,6 +13,7 @@ class ContactDetails extends StatelessWidget {
         ? phones.first.value ?? "No Phone Number"
         : "No Phone Number";
 
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -39,37 +40,47 @@ class ContactDetails extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              SizedBox(height: 20),
               Container(
-                child: Row(
-                  children: [
-                    Card(
-                      shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(2),
-                      ),
-                      color: Color(0xff98e0ff),
-                      elevation: 2,
-                      child: Icon(Icons.star)
-                    ),
-                    Card(
-                      shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                      color: Color(0xff98e0ff),
-                      elevation: 2,
-                      child: Icon(Icons.star)
-                    ),
-                    Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                      color: Color(0xff98e0ff),
-                      elevation: 2,
-                      child: Icon(Icons.star)
-                    )
-                  ],
-                )
-              ),
+                  child: Row(
+                children: [
+                  Spacer(flex: 3),
+                  Container(
+                      width: 100,
+                      child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          color: Color(0xff98e0ff),
+                          elevation: 2,
+                          child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Icon(Icons.phone)))),
+                  Spacer(flex: 1),
+                  Container(
+                      width: 100,
+                      child: Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          color: Color(0xff98e0ff),
+                          elevation: 2,
+                          child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Icon(Icons.message)))),
+                  Spacer(flex: 1),
+                  Container(
+                      width: 100,
+                      child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          color: Color(0xff98e0ff),
+                          elevation: 2,
+                          child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Icon(Icons.list)))),
+                  Spacer(flex: 3)
+                ],
+              )),
               Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
