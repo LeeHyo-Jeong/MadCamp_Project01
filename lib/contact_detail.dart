@@ -1,23 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:contacts_service/contacts_service.dart';
+import 'package:madcamp_project01/contact_revise.dart';
 
 class ContactDetails extends StatelessWidget {
   final Contact contact;
 
   const ContactDetails({super.key, required this.contact});
-
-  // Future<void> addContact(firstname, secondname, email, phone) async {
-  //   // 새 연락처 생성
-  //   final newContact = Contact(
-  //     givenName: firstname,
-  //     familyName: secondname,
-  //     emails: email,
-  //     phones: [Item(value: phone)],
-  //   );
-  //
-  //   // 연락처 추가
-  //   await ContactsService.addContact(newContact);
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -43,23 +31,9 @@ class ContactDetails extends StatelessWidget {
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(context, true);
             },
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                // 연락처에 정보 저장하는 거 구현하기
-              },
-              child: Text(
-                "save",
-                style: TextStyle(
-                  fontSize: 17,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ],
         ),
         body: Center(
           child: Column(
@@ -68,56 +42,69 @@ class ContactDetails extends StatelessWidget {
               contact.avatar != null && contact.avatar!.isNotEmpty
                   ? CircleAvatar(
                       backgroundImage: MemoryImage(contact.avatar!),
-                      radius: avatarRadius*2, // 반지름 설정
+                      radius: avatarRadius * 2, // 반지름 설정
                     )
                   : CircleAvatar(
-                      backgroundColor: Color(0xff98e0ff),
+                      backgroundColor: Color(0xff98e0ff), // 색깔 변경하기?
                       // 배경색 설정 (원형 아바타를 만들 때 중요)
-                      radius: avatarRadius*2,
+                      radius: avatarRadius * 2,
                       // 반지름 설정
                       child: Icon(
                         Icons.person, // Icons 클래스의 person 아이콘 사용
                         color: Colors.white, // 아이콘 색상 설정
-                        size: avatarRadius*2.8, // 아이콘 크기 설정
+                        size: avatarRadius * 2.8, // 아이콘 크기 설정
                       )),
               Container(
                   child: Row(
                 children: [
                   Spacer(flex: 3),
-                  Container( // 전화 앱 열기 구현?
+                  Container(
+                      // 전화 앱 열기 구현?
                       width: 100,
                       child: Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          color: Color(0xff98e0ff),
+                          color: Color(0xfff7f2f9),
                           elevation: 2,
                           child: Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Icon(Icons.phone)))),
                   Spacer(flex: 1),
-                  Container( // 메세지 앱 열기 구현
+                  Container(
+                      // 메세지 앱 열기 구현
                       width: 100,
                       child: Card(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
-                          color: Color(0xff98e0ff),
+                          color: Color(0xfff7f2f9),
                           elevation: 2,
                           child: Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Icon(Icons.message)))),
                   Spacer(flex: 1),
-                  Container( // 수정 기능 추가 가능: 연필 아이콘으로 바꾸고 수정 화면으로 변경되도록.
-                      width: 100,
-                      child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          color: Color(0xff98e0ff),
-                          elevation: 2,
-                          child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Icon(Icons.list)))),
+                  Container(
+                    // 수정 기능 추가 가능: 연필 아이콘으로 바꾸고 수정 화면으로 변경되도록.
+                    width: 100,
+                    child: GestureDetector(
+                        onTap: () async {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ContactRevise(contact: contact),
+                              ));
+                        },
+                        child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            color: Color(0xfff7f2f9),
+                            elevation: 2,
+                            child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Icon(Icons.edit)))),
+                  ),
                   Spacer(flex: 3)
                 ],
               )),

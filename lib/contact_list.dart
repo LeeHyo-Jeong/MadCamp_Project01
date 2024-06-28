@@ -81,15 +81,15 @@ class _ContactsWidgetState extends State<ContactsWidget> {
                         ? contact.phones!.first.value ?? "No Phone Number"
                         : "No Phone Number",
                   ),
-                  onTap: () {
-                    // 전화번호를 누르면 상세 페이지로 이동
-                    Navigator.push(
+                  onTap: () async {
+                    bool? shouldRefresh = await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              ContactDetails(contact: contact),
+                          builder: (context) => ContactDetails(contact: contact),
                         ));
-                    setState(() {});
+                    if (shouldRefresh == true) {
+                      getContacts();
+                    }
                   },
                 );
               },
