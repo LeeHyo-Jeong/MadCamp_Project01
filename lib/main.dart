@@ -6,81 +6,80 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: DefaultTabController(
-        length: 3, // 탭의 개수
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Color(0xff98e0ff),
-            title: Text("Application"),
-            bottom: TabBar(
-              tabs: [
-                Tab(text: 'Contacts'),
-                Tab(text: 'Gallery'),
-                Tab(text: 'Tab 3'),
-              ],
-            ),
-          ),
-          body: TabBarView(
-            children: [
-              ContactsWidget(), // 연락처 위젯 사용
-              Center(child: Text('gallery')),
-              Center(child: Text('Content for Tab 3')),
-            ],
-          ),
-        ),
-      ),
+      home: HomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-
+class HomePage extends StatefulWidget {
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  late String _appBarTitle;
 
-  void _incrementCounter() {
+  @override
+  void initState() {
+    super.initState();
+    _appBarTitle = "Contacts"; // 초기 AppBar 제목
+    _tabController = TabController(length: 3, vsync: this);
+    _tabController.addListener(_handleTabSelection);
+  }
+
+  void _handleTabSelection() {
     setState(() {
-      _counter++;
+      switch (_tabController.index) {
+        case 0:
+          _appBarTitle = "Contacts";
+          break;
+        case 1:
+          _appBarTitle = "Gallery";
+          break;
+        case 2:
+          _appBarTitle = "Tab 3";
+          break;
+      }
     });
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+        appBar: AppBar(
+          backgroundColor: Color(0xff98e0ff),
+          title: Text(_appBarTitle),
+        ),
+        body: TabBarView(
+          controller: _tabController,
+          children: [
+            ContactsWidget(), // 연락처 위젯 사용
+            Center(child: Text('Gallery')),
+            Center(child: Text('Content for Tab 3')),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        bottomNavigationBar: Container(
+          color: Color(0xfff7f2f9),
+          child: TabBar(
+            controller: _tabController,
+            tabs: [
+              Tab(icon: Icon(Icons.phone)),
+              Tab(icon: Icon(Icons.photo_library)),
+              Tab(icon: Icon(Icons.menu)),
+            ],
+          ),
+        ));
   }
 }

@@ -1,26 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:contacts_service/contacts_service.dart';
 
-class ContactDetails extends StatelessWidget {
-  final Contact contact;
-
-  const ContactDetails({super.key, required this.contact});
+class ContactNew extends StatelessWidget {
+  const ContactNew({super.key});
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double avatarRadius = screenWidth * 0.1;
-    var phones = contact.phones ?? [];
-    String phoneNumber = phones.isNotEmpty
-        ? phones.first.value ?? "No Phone Number"
-        : "No Phone Number";
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: Text(
-            "Contact",
+            "New Contact",
             style: TextStyle(
               fontSize: 25,
               color: Colors.black,
@@ -52,62 +46,15 @@ class ContactDetails extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              contact.avatar != null && contact.avatar!.isNotEmpty
-                  ? CircleAvatar(
-                      backgroundImage: MemoryImage(contact.avatar!),
-                      radius: avatarRadius*2, // 반지름 설정
-                    )
-                  : CircleAvatar(
-                      backgroundColor: Color(0xff98e0ff),
-                      // 배경색 설정 (원형 아바타를 만들 때 중요)
-                      radius: avatarRadius*2,
-                      // 반지름 설정
-                      child: Icon(
-                        Icons.person, // Icons 클래스의 person 아이콘 사용
-                        color: Colors.white, // 아이콘 색상 설정
-                        size: avatarRadius*2.8, // 아이콘 크기 설정
-                      )),
-              Container(
-                  child: Row(
-                children: [
-                  Spacer(flex: 3),
-                  Container( // 전화 앱 열기 구현?
-                      width: 100,
-                      child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          color: Color(0xff98e0ff),
-                          elevation: 2,
-                          child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Icon(Icons.phone)))),
-                  Spacer(flex: 1),
-                  Container( // 메세지 앱 열기 구현
-                      width: 100,
-                      child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          color: Color(0xff98e0ff),
-                          elevation: 2,
-                          child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Icon(Icons.message)))),
-                  Spacer(flex: 1),
-                  Container( // 수정 기능 추가 가능: 연필 아이콘으로 바꾸고 수정 화면으로 변경되도록.
-                      width: 100,
-                      child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          color: Color(0xff98e0ff),
-                          elevation: 2,
-                          child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Icon(Icons.list)))),
-                  Spacer(flex: 3)
-                ],
-              )),
+              CircleAvatar(
+                radius: avatarRadius*2.5,
+                backgroundColor: Color(0xff98e0ff),
+                child: Icon(
+                  Icons.person,
+                  size: avatarRadius*3.5,
+                  color: Colors.white,
+                ),
+              ),
               Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
@@ -121,24 +68,25 @@ class ContactDetails extends StatelessWidget {
                     children: [
                       _buildTextField(
                         label: "First name",
-                        initialValue: contact.givenName ?? "",
+                        initialValue: "",
                         icon: Icons.person,
                       ),
+                      SizedBox(height: 20),
                       _buildTextField(
                         label: "Last name",
-                        initialValue: contact.familyName ?? "",
+                        initialValue: "",
                         icon: Icons.person,
                       ),
+                      SizedBox(height: 20),
                       _buildTextField(
                         label: "Phone",
-                        initialValue: phoneNumber,
+                        initialValue: "",
                         icon: Icons.phone,
                       ),
+                      SizedBox(height: 20),
                       _buildTextField(
                         label: "Email",
-                        initialValue: contact.emails?.isNotEmpty == true
-                            ? contact.emails!.first.value ?? ""
-                            : "",
+                        initialValue: "",
                         icon: Icons.email,
                       ),
                     ],
