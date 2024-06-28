@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'dart:typed_data';
 import 'package:madcamp_project01/image_detail.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ImageWidget extends StatefulWidget {
   const ImageWidget({super.key});
@@ -72,14 +73,18 @@ class _ImageWidgetState extends State<ImageWidget> {
               if(snapshot.connectionState == ConnectionState.done && snapshot.data != null) {
                 return GestureDetector(
                     onTap: () async{
-                      Uint8List? imageData = await _mediaList[index].originBytes;
-                      if(imageData != null){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ImageDetails(imageData: imageData)
-                          )
-                        );
+                      bool? deleted = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ImageDetails(asset: _mediaList[index]),
+                        ),
+                      );
+
+                      if(deleted == true){
+                        // 이미지 리스트에서 삭제된 이미지를 제거
+                        setState((){
+                          _mediaList.removeAt(index);
+                        });
                       }
                     },
                   child: Image.memory(
