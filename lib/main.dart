@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
         length: 3, // 탭의 개수
         child: Scaffold(
           appBar: AppBar(
-
+            backgroundColor: Color(0xff98e0ff),
             title: Text("Application"),
             bottom: TabBar(
               tabs: [
@@ -40,7 +40,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
   final String title;
 
   @override

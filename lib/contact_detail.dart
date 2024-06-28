@@ -40,10 +40,41 @@ class ContactDetails extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
+              Container(
+                child: Row(
+                  children: [
+                    Card(
+                      shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(2),
+                      ),
+                      color: Color(0xff98e0ff),
+                      elevation: 2,
+                      child: Icon(Icons.star)
+                    ),
+                    Card(
+                      shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                      color: Color(0xff98e0ff),
+                      elevation: 2,
+                      child: Icon(Icons.star)
+                    ),
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                      color: Color(0xff98e0ff),
+                      elevation: 2,
+                      child: Icon(Icons.star)
+                    )
+                  ],
+                )
+              ),
               Card(
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(20),
                 ),
+                // color: Color(0xff98e0ff),
                 elevation: 2,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -64,20 +95,12 @@ class ContactDetails extends StatelessWidget {
                         initialValue: phoneNumber,
                         icon: Icons.phone,
                       ),
-                      _buildDropdownField(
-                        label: "Mobile",
-                        items: ["Mobile", "Home", "Work"],
-                      ),
                       _buildTextField(
                         label: "Email",
                         initialValue: contact.emails?.isNotEmpty == true
                             ? contact.emails!.first.value ?? ""
                             : "",
                         icon: Icons.email,
-                      ),
-                      _buildDropdownField(
-                        label: "Home",
-                        items: ["Home", "Work", "Other"],
                       ),
                     ],
                   ),
