@@ -22,7 +22,6 @@ class _ImageWidgetState extends State<ImageWidget> {
   Future<void> _loadMedia() async{
     // 갤러리 접근 권한 요청
     final PermissionState ps = await PhotoManager.requestPermissionExtend();
-    print('PermissionState: ${ps.isAuth}, ${ps.hasAccess}');
     // 권한 허용 되었다면 갤러리로부터 이미지 fetch
     if(ps.isAuth){
       List<AssetPathEntity> albums = await PhotoManager.getAssetPathList(
