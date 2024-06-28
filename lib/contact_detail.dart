@@ -6,6 +6,19 @@ class ContactDetails extends StatelessWidget {
 
   const ContactDetails({super.key, required this.contact});
 
+  // Future<void> addContact(firstname, secondname, email, phone) async {
+  //   // 새 연락처 생성
+  //   final newContact = Contact(
+  //     givenName: firstname,
+  //     familyName: secondname,
+  //     emails: email,
+  //     phones: [Item(value: phone)],
+  //   );
+  //
+  //   // 연락처 추가
+  //   await ContactsService.addContact(newContact);
+  // }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;

@@ -55,7 +55,7 @@ class _ContactsWidgetState extends State<ContactsWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _contacts == null
-          ? Center(child: CircularProgressIndicator())
+          ? Center(child: CircularProgressIndicator(color: Color(0xff98e0ff)))
           : ListView.builder(
               itemCount: _contacts?.length ?? 0,
               itemBuilder: (BuildContext context, int index) {
@@ -67,7 +67,8 @@ class _ContactsWidgetState extends State<ContactsWidget> {
                           radius: 20, // 반지름 설정
                         )
                       : CircleAvatar(
-                          backgroundColor: Color(0xff98e0ff), // 배경색 설정 (원형 아바타를 만들 때 중요)
+                          backgroundColor:
+                              Color(0xff98e0ff), // 배경색 설정 (원형 아바타를 만들 때 중요)
                           radius: 20, // 반지름 설정
                           child: Icon(
                             Icons.person, // Icons 클래스의 person 아이콘 사용
@@ -88,6 +89,7 @@ class _ContactsWidgetState extends State<ContactsWidget> {
                           builder: (context) =>
                               ContactDetails(contact: contact),
                         ));
+                    getContacts();
                   },
                 );
               },
@@ -97,9 +99,9 @@ class _ContactsWidgetState extends State<ContactsWidget> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    ContactNew(),
+                builder: (context) => ContactNew(),
               ));
+          getContacts();
         },
         child: Icon(Icons.add),
       ),
