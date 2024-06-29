@@ -48,6 +48,17 @@ class _WeatherWidgetState extends State<WeatherWidget> {
     }
   }
 
+  void _initdata() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await dotenv.load(fileName: "assets/config/.env");
+  }
+
+  @override
+  void initState() {
+    _initdata();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
