@@ -74,14 +74,27 @@ class _HomePageState extends State<HomePage>
             Center(child: Text('Content for Tab 3')),
           ],
         ),
-        bottomNavigationBar: Container(
+        bottomNavigationBar: Ink(
           color: Color(0xfff7f2f9),
           child: TabBar(
+            labelColor: Colors.black54,
+            unselectedLabelColor: Colors.black38,
+            indicatorColor: Color(0xff00bfff),
+
             controller: _tabController,
             tabs: [
-              Tab(icon: Icon(Icons.phone)),
-              Tab(icon: Icon(Icons.photo_library)),
-              Tab(icon: Icon(Icons.menu)),
+              InkWell(
+                splashColor: Color(0xff00bfff),
+                child: Tab(icon: Icon(Icons.phone)),
+              ),
+              InkWell(
+                splashColor: Color(0xff00bfff),
+                child: Tab(icon: Icon(Icons.photo_library)),
+              ),
+              InkWell(
+                splashColor: Color(0xff00bfff),
+                child: Tab(icon: Icon(Icons.menu)),
+              ),
             ],
           ),
         ));
