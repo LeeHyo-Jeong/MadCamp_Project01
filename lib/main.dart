@@ -60,16 +60,27 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(20),
+            ),
+          ),
           backgroundColor: Color(0xff98e0ff),
           title: Text(
             _appBarTitle
           ),
           centerTitle: true,
         ),
-        body: TabBarView(
+        body:
+        TabBarView(
           controller: _tabController,
           children: [
-            ContactsWidget(), // 연락처 위젯 사용
+            Column( // main의 appbar와 contact page의 appbar 사이 간격 조정
+              children: [
+                SizedBox(height: 10),
+                Expanded(child: ContactsWidget()),
+              ],
+            ),
             ImageWidget(),
             Center(child: Text('Content for Tab 3')),
           ],

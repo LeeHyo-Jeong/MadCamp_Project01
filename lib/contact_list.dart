@@ -125,6 +125,8 @@ class _ContactsWidgetState extends State<ContactsWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20)),
         title: _isSearching
             ? TextField(
           controller: _searchController,
@@ -132,6 +134,7 @@ class _ContactsWidgetState extends State<ContactsWidget> {
           decoration: InputDecoration(
             hintText: 'Search...',
             border: InputBorder.none,
+
           ),
           onChanged: _filterItems,
         )
