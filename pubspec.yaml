@@ -39,6 +39,7 @@ dependencies:
   contacts_service: ^0.6.3
   photo_manager: ^3.2.0
   fluttertoast: ^8.2.6
+  draggable_scrollbar: ^0.1.0
 
 dev_dependencies:
   flutter_test:

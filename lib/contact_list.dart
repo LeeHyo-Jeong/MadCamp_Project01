@@ -3,6 +3,7 @@ import 'package:madcamp_project01/contact_detail.dart';
 import 'package:madcamp_project01/contact_new.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:contacts_service/contacts_service.dart';
+import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 
 class ContactsWidget extends StatefulWidget {
   const ContactsWidget({super.key});
@@ -13,6 +14,7 @@ class ContactsWidget extends StatefulWidget {
 
 class _ContactsWidgetState extends State<ContactsWidget> {
   List<Contact>? _contacts = null; // ios 오류때문에 초기화 해야함
+  final ScrollController _scrollController = ScrollController();
 
   // 연락처 가져오기 기능
   Future<void> getContacts() async {
@@ -52,47 +54,60 @@ class _ContactsWidgetState extends State<ContactsWidget> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _contacts == null
           ? Center(child: CircularProgressIndicator(color: Color(0xff98e0ff)))
-          : ListView.builder(
-              itemCount: _contacts?.length ?? 0,
-              itemBuilder: (BuildContext context, int index) {
-                Contact contact = _contacts![index];
-                return ListTile(
-                  leading: contact.avatar != null && contact.avatar!.isNotEmpty
-                      ? CircleAvatar(
-                          backgroundImage: MemoryImage(contact.avatar!),
-                          radius: 20, // 반지름 설정
-                        )
-                      : CircleAvatar(
-                          backgroundColor:
-                              Color(0xff98e0ff), // 배경색 설정 (원형 아바타를 만들 때 중요)
-                          radius: 20, // 반지름 설정
-                          child: Icon(
-                            Icons.person, // Icons 클래스의 person 아이콘 사용
-                            color: Colors.white, // 아이콘 색상 설정
-                            size: 28, // 아이콘 크기 설정
-                          )),
-                  title: Text(contact.displayName ?? "No Name"),
-                  subtitle: Text(
-                    contact.phones?.isNotEmpty == true
-                        ? contact.phones!.first.value ?? "No Phone Number"
-                        : "No Phone Number",
-                  ),
-                  onTap: () async {
-                    bool? shouldRefresh = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ContactDetails(contact: contact),
-                        ));
-                    if (shouldRefresh == true) {
-                      getContacts();
-                    }
-                  },
-                );
-              },
+          : DraggableScrollbar.arrows(
+              backgroundColor: Color(0xff98e0ff),
+              controller: _scrollController,
+              child: ListView.builder(
+                controller: _scrollController,
+                itemCount: _contacts?.length ?? 0,
+                itemBuilder: (BuildContext context, int index) {
+                  Contact contact = _contacts![index];
+                  return ListTile(
+                    leading: contact.avatar != null &&
+                            contact.avatar!.isNotEmpty
+                        ? CircleAvatar(
+                            backgroundImage: MemoryImage(contact.avatar!),
+                            radius: 20, // 반지름 설정
+                          )
+                        : CircleAvatar(
+                            backgroundColor:
+                                Color(0xff98e0ff), // 배경색 설정 (원형 아바타를 만들 때 중요)
+                            radius: 20, // 반지름 설정
+                            child: Icon(
+                              Icons.person, // Icons 클래스의 person 아이콘 사용
+                              color: Colors.white, // 아이콘 색상 설정
+                              size: 28, // 아이콘 크기 설정
+                            )),
+                    title: Text(contact.displayName ?? "No Name"),
+                    subtitle: Text(
+                      contact.phones?.isNotEmpty == true
+                          ? contact.phones!.first.value ?? "No Phone Number"
+                          : "No Phone Number",
+                    ),
+                    onTap: () async {
+                      bool? shouldRefresh = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ContactDetails(contact: contact),
+                          ));
+                      if (shouldRefresh == true) {
+                        getContacts();
+                      }
+                    },
+                  );
+                },
+              ),
             ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
