@@ -22,7 +22,8 @@ class _ContactNewState extends State<ContactNew> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
 
-  Future<void> addContact(String firstname, String lastname, String email, String phone) async {
+  Future<void> addContact(
+      String firstname, String lastname, String email, String phone) async {
     // 새 연락처 생성
     final newContact = Contact(
       givenName: firstname,
@@ -43,112 +44,113 @@ class _ContactNewState extends State<ContactNew> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color(0xfff7f2f9),
-          title: Text(
-            "New Contact",
-            style: TextStyle(
-              fontSize: 25,
-              color: Colors.black,
+          appBar: AppBar(
+            backgroundColor: Color(0xfff7f2f9),
+            title: Text(
+              "New Contact",
+              style: TextStyle(
+                fontSize: 25,
+                color: Colors.black,
+              ),
             ),
-          ),
-          centerTitle: true,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context, false);
-            },
-          ),
-          actions: [
-            TextButton(
+            centerTitle: true,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
               onPressed: () {
-                addContact(firstname, lastname, email, phone); // 연락처가 추가된다.
-                Navigator.pop(context, true);
+                Navigator.pop(context, false);
               },
-              child: Text(
-                "save",
-                style: TextStyle(
-                  fontSize: 17,
-                  color: Colors.black,
-                ),
-              ),
             ),
-          ],
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              CircleAvatar(
-                radius: avatarRadius * 2.5,
-                backgroundColor: Color(0xff98e0ff),
-                child: Icon(
-                  Icons.person,
-                  size: avatarRadius * 3.5,
-                  color: Colors.white,
-                ),
-              ),
-              Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                elevation: 2,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildTextField(
-                        label: "First name",
-                        controller: firstnameController,
-                        onChanged: (value) {
-                          setState(() {
-                            firstname = value;
-                          });
-                        },
-                        icon: Icons.person,
-                      ),
-                      SizedBox(height: 20),
-                      _buildTextField(
-                        label: "Last name",
-                        controller: lastnameController,
-                        onChanged: (value) {
-                          setState(() {
-                            lastname = value;
-                          });
-                        },
-                        icon: Icons.person,
-                      ),
-                      SizedBox(height: 20),
-                      _buildTextField(
-                        label: "Phone",
-                        controller: phoneController,
-                        onChanged: (value) {
-                          setState(() {
-                            phone = value;
-                          });
-                        },
-                        icon: Icons.phone,
-                      ),
-                      SizedBox(height: 20),
-                      _buildTextField(
-                        label: "Email",
-                        controller: emailController,
-                        onChanged: (value) {
-                          setState(() {
-                            email = value;
-                          });
-                        },
-                        icon: Icons.email,
-                      ),
-                    ],
+            actions: [
+              TextButton(
+                onPressed: () {
+                  addContact(firstname, lastname, email, phone); // 연락처가 추가된다.
+                  Navigator.pop(context, true);
+                },
+                child: Text(
+                  "save",
+                  style: TextStyle(
+                    fontSize: 17,
+                    color: Colors.black,
                   ),
                 ),
-              )
+              ),
             ],
           ),
-        ),
-      ),
+          body: SingleChildScrollView(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  CircleAvatar(
+                    radius: avatarRadius * 2.5,
+                    backgroundColor: Color(0xff98e0ff),
+                    child: Icon(
+                      Icons.person,
+                      size: avatarRadius * 3.5,
+                      color: Colors.white,
+                    ),
+                  ),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    elevation: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildTextField(
+                            label: "First name",
+                            controller: firstnameController,
+                            onChanged: (value) {
+                              setState(() {
+                                firstname = value;
+                              });
+                            },
+                            icon: Icons.person,
+                          ),
+                          SizedBox(height: 20),
+                          _buildTextField(
+                            label: "Last name",
+                            controller: lastnameController,
+                            onChanged: (value) {
+                              setState(() {
+                                lastname = value;
+                              });
+                            },
+                            icon: Icons.person,
+                          ),
+                          SizedBox(height: 20),
+                          _buildTextField(
+                            label: "Phone",
+                            controller: phoneController,
+                            onChanged: (value) {
+                              setState(() {
+                                phone = value;
+                              });
+                            },
+                            icon: Icons.phone,
+                          ),
+                          SizedBox(height: 20),
+                          _buildTextField(
+                            label: "Email",
+                            controller: emailController,
+                            onChanged: (value) {
+                              setState(() {
+                                email = value;
+                              });
+                            },
+                            icon: Icons.email,
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )),
     );
   }
 
