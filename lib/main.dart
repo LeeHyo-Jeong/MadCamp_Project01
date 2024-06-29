@@ -1,6 +1,6 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:madcamp_project01/contact_list.dart';
-import 'package:madcamp_project01/image_list.dart';
+import 'package:madcamp_project01/Homepage.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,103 +11,67 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: LodingPage(),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
+class LodingPage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
+class _HomePageState extends State<LodingPage>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  late String _appBarTitle;
-
   @override
   void initState() {
     super.initState();
-    _appBarTitle = "Contacts"; // 초기 AppBar 제목
-    _tabController = TabController(length: 3, vsync: this);
-    _tabController.addListener(_handleTabSelection);
-  }
-
-  void _handleTabSelection() {
-    setState(() {
-      switch (_tabController.index) {
-        case 0:
-          _appBarTitle = "Contacts";
-          break;
-        case 1:
-          _appBarTitle = "Gallery";
-          break;
-        case 2:
-          _appBarTitle = "Tab 3";
-          break;
-      }
+    Timer(Duration(milliseconds: 1500), () {
+      Navigator.pushReplacement(context, MaterialPageRoute(
+          builder: (context) => HomePage()
+      )
+      );
     });
   }
 
   @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(20),
-            ),
-          ),
+    var screenHeight = MediaQuery.of(context).size.height;
+    var screenWidth = MediaQuery.of(context).size.width;
+
+    return PopScope(
+      child: MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+        child: Scaffold(
           backgroundColor: Color(0xff98e0ff),
-          title: Text(
-            _appBarTitle
-          ),
-          centerTitle: true,
-        ),
-        body:
-        TabBarView(
-          controller: _tabController,
-          children: [
-            Column( // main의 appbar와 contact page의 appbar 사이 간격 조정
-              children: [
-                SizedBox(height: 10),
-                Expanded(child: ContactsWidget()),
+          body: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(height: screenHeight * 0.384375),
+                // Container(
+                //   child: SvgPicture.asset(
+                //     'assets/images/public/PurpleLogo.svg',
+                //     width: screenWidth * 0.616666,
+                //     height: screenHeight * 0.0859375,
+                //   ),
+                // ),
+                Expanded(child: SizedBox()),
+                Align(
+                  child: Text(
+                    "© Copyright 2024, 몰입캠프 Week1",
+                    style: TextStyle(
+                      fontSize: screenWidth * (14 / 360),
+                      color: Color.fromRGBO(255, 255, 255, 0.6),
+                    ),
+                  ),
+                ),
+                SizedBox(height: screenHeight * 0.0625),
               ],
             ),
-            ImageWidget(),
-            Center(child: Text('Content for Tab 3')),
-          ],
-        ),
-        bottomNavigationBar: Ink(
-          color: Color(0xfff7f2f9),
-          child: TabBar(
-            labelColor: Colors.black54,
-            unselectedLabelColor: Colors.black38,
-            indicatorColor: Color(0xff00bfff),
-
-            controller: _tabController,
-            tabs: [
-              InkWell(
-                splashColor: Color(0xff00bfff),
-                child: Tab(icon: Icon(Icons.phone)),
-              ),
-              InkWell(
-                splashColor: Color(0xff00bfff),
-                child: Tab(icon: Icon(Icons.photo_library)),
-              ),
-              InkWell(
-                splashColor: Color(0xff00bfff),
-                child: Tab(icon: Icon(Icons.menu)),
-              ),
-            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
