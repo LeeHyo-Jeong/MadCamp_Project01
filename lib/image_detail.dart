@@ -3,10 +3,24 @@ import 'dart:typed_data';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class ImageDetails extends StatelessWidget {
-  final AssetEntity asset;
+class ImageView extends StatefulWidget {
+  final List<AssetEntity> assets;
+  final int initialIndex;
 
-  const ImageDetails({super.key, required this.asset});
+  const ImageView({super.key, required this.assets, required this.initialIndex});
+
+  @override
+  State<ImageView> createState() => _ImageViewState();
+}
+
+class _ImageViewState extends State<ImageView> {
+  late PageController _pageController;
+
+  @override
+  void initState(){
+    super.initState();
+    _pageController = PageController(initialPage: widget.initialIndex);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,45 +36,54 @@ class ImageDetails extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.delete_outline_rounded, color: Colors.red,),
               onPressed: () async{
-
-                List<String> deleted = await PhotoManager.editor.deleteWithIds([asset.id]);
+                final currentIndex = _pageController.page?.toInt() ?? widget.initialIndex;
+                List<String> deleted = await PhotoManager.editor.deleteWithIds([widget.assets[currentIndex].id]);
                 if(deleted.isNotEmpty){
                   // 삭제 성공 시 true 반환해서 리스트 갱신하도록 함
-                   Navigator.pop(context, true);
-                   // 삭제가 되었음을 알리는 toast (알람)
-                   Fluttertoast.showToast(
-                       msg: "Image deleted !",
-                       gravity: ToastGravity.BOTTOM,
-                       backgroundColor: Colors.black87,
+                  Navigator.pop(context, true);
+                  // 삭제가 되었음을 알리는 toast (알람)
+                  Fluttertoast.showToast(
+                      msg: "Image deleted !",
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.black87,
 
-                       fontSize: 17,
-                       textColor: Colors.white,
-                       toastLength: Toast.LENGTH_SHORT
-                   );
+                      fontSize: 17,
+                      textColor: Colors.white,
+                      toastLength: Toast.LENGTH_SHORT
+                  );
                 }
                 else{
-                 ScaffoldMessenger.of(context).showSnackBar(
-                   SnackBar(content: Text('Failed to delete the image')),
-                 );
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Failed to delete the image')),
+                  );
                 }
               },
             )
           ],
         ),
-        body: Center(
-            child: FutureBuilder<Uint8List?>(
-              future: asset.originBytes,
-              builder: (context, snapshot){
-                if(snapshot.connectionState == ConnectionState.done && snapshot.data != null){
-                  return Image.memory(
-                    snapshot.data!,
-                    fit: BoxFit.contain,
-                    );
-                }
-                  else{
-                    return CircularProgressIndicator(color: Color(0xff98e0ff));
+        body: PageView.builder(
+          controller: _pageController,
+            itemCount: widget.assets.length,
+            itemBuilder: (context, index) {
+              return FutureBuilder<Uint8List?>(
+                  future: widget.assets[index].originBytes,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        snapshot.data != null) {
+                      return Image.memory(
+                        snapshot.data!,
+                        fit: BoxFit.contain,
+                      );
+                    }
+                    else {
+                      return CircularProgressIndicator(
+                          color: Color(0xff98e0ff));
+                    }
                   }
-              }
-            )));
+              );
+            }
+          ),
+    );
   }
-}
+  }
+

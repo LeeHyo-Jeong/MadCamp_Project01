@@ -31,7 +31,6 @@ class _ImageWidgetState extends State<ImageWidget> {
           type: RequestType.image
       );
 
-      //List<AssetEntity> media = await albums[0].getAssetListPaged(page: 0, size: 100);
       // 갤러리의 모든 사진 가져오기
       final AssetPathEntity album = albums.first;
       int imageCount = await album.assetCountAsync;
@@ -76,7 +75,7 @@ class _ImageWidgetState extends State<ImageWidget> {
                       bool? deleted = await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ImageDetails(asset: _mediaList[index]),
+                          builder: (context) => ImageView(assets: _mediaList, initialIndex: index),
                         ),
                       );
 
