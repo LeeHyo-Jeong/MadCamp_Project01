@@ -115,13 +115,13 @@ class ContactDetails extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              Spacer(flex: 3),
               contact.avatar != null && contact.avatar!.isNotEmpty
                   ? CircleAvatar(
                       backgroundImage: MemoryImage(contact.avatar!),
                       radius: avatarRadius * 2, // 반지름 설정
                     )
-                  : Spacer(flex: 3),
-              CircleAvatar(
+                  : CircleAvatar(
                   backgroundColor: Color(0xff98e0ff), // 색깔 변경하기?
                   // 배경색 설정 (원형 아바타를 만들 때 중요)
                   radius: avatarRadius * 2,

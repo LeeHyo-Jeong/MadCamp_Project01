@@ -52,9 +52,45 @@ class _HomePageState extends State<_HomePage>
     super.dispose();
   }
 
+  void _deleteConfirmDialog(bool bool1) async {
+    return await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white.withOpacity(0.8),
+          title: Text("Exit"),
+          content: Text("Are you sure you want to exit?"),
+          actions: [
+            TextButton(
+              child: Text("Cancel",
+                  style: TextStyle(
+                    color: Colors.black54,
+                  )),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text("Exit",
+                  style: TextStyle(
+                    color: Colors.red,
+                  )),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PopScope(
+        canPop: false,
+        onPopInvoked: _deleteConfirmDialog,
+        child: Scaffold(
         appBar: AppBar(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -104,6 +140,6 @@ class _HomePageState extends State<_HomePage>
               ),
             ],
           ),
-        ));
+        )));
   }
 }
