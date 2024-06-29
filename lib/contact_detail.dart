@@ -45,16 +45,18 @@ class ContactDetails extends StatelessWidget {
                       backgroundImage: MemoryImage(contact.avatar!),
                       radius: avatarRadius * 2, // 반지름 설정
                     )
-                  : CircleAvatar(
-                      backgroundColor: Color(0xff98e0ff), // 색깔 변경하기?
-                      // 배경색 설정 (원형 아바타를 만들 때 중요)
-                      radius: avatarRadius * 2,
-                      // 반지름 설정
-                      child: Icon(
-                        Icons.person, // Icons 클래스의 person 아이콘 사용
-                        color: Colors.white, // 아이콘 색상 설정
-                        size: avatarRadius * 2.8, // 아이콘 크기 설정
-                      )),
+                  : Spacer(flex: 3),
+              CircleAvatar(
+                  backgroundColor: Color(0xff98e0ff), // 색깔 변경하기?
+                  // 배경색 설정 (원형 아바타를 만들 때 중요)
+                  radius: avatarRadius * 2,
+                  // 반지름 설정
+                  child: Icon(
+                    Icons.person, // Icons 클래스의 person 아이콘 사용
+                    color: Colors.white, // 아이콘 색상 설정
+                    size: avatarRadius * 2.8, // 아이콘 크기 설정
+                  )),
+              Spacer(flex: 3),
               Container(
                   child: Row(
                 children: [
@@ -109,6 +111,7 @@ class ContactDetails extends StatelessWidget {
                   Spacer(flex: 3)
                 ],
               )),
+              Spacer(flex: 1),
               Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
@@ -145,7 +148,8 @@ class ContactDetails extends StatelessWidget {
                     ],
                   ),
                 ),
-              )
+              ),
+              Spacer(flex: 2),
             ],
           ),
         ),
