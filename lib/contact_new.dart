@@ -27,8 +27,8 @@ class _ContactNewState extends State<ContactNew> {
     final newContact = Contact(
       givenName: firstname,
       familyName: lastname,
-      emails: [Item(value: email)],
-      phones: [Item(value: phone)],
+      emails: [Item(label: "email", value: email)],
+      phones: [Item(label: "mobile", value: phone)],
     );
 
     // 연락처 추가

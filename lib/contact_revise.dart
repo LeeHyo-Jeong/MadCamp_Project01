@@ -54,8 +54,8 @@ class _ContactReviseState extends State<ContactRevise> {
     // 연락처 수정 내용 적용
     contact.givenName = firstname;
     contact.familyName = lastname;
-    contact.emails = [Item(value: email)];
-    contact.phones = [Item(value: phone)];
+    contact.emails = [Item(label: "email", value: email)];
+    contact.phones = [Item(label: "mobile", value: phone)];
 
     // 연락처 수정
     await ContactsService.updateContact(contact);
@@ -88,7 +88,7 @@ class _ContactReviseState extends State<ContactRevise> {
           actions: [
             TextButton(
               onPressed: () {
-                reviseContact(givencontact, firstname, lastname, email, phone); // 연락처가 추가된다.
+                reviseContact(givencontact, firstname, lastname, email, phone); // 연락처가 수정된다.
                 Navigator.pop(context, true);
               },
               child: Text(

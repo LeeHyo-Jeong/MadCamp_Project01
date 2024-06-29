@@ -241,7 +241,9 @@ class _ContactsWidgetState extends State<ContactsWidget> {
                                 ContactDetails(contact: contact),
                           ));
                       if (shouldRefresh == true) {
-                        getContacts();
+                        setState(() {
+                          getContacts();
+                        });
                       }
                     },
                   );
@@ -258,7 +260,9 @@ class _ContactsWidgetState extends State<ContactsWidget> {
                 builder: (context) => ContactNew(),
               ));
           if (shouldRefresh == true) {
-            getContacts();
+            setState(() {
+              getContacts();
+            });
           }
         },
         child: Icon(
