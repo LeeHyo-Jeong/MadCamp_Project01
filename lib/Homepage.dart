@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:madcamp_project01/contact_list.dart';
 import 'package:madcamp_project01/image_list.dart';
 
@@ -76,7 +77,7 @@ class _HomePageState extends State<_HomePage>
                     color: Colors.red,
                   )),
               onPressed: () {
-                Navigator.pop(context);
+                SystemNavigator.pop();
               },
             )
           ],
