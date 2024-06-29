@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:madcamp_project01/contact_list.dart';
 import 'package:madcamp_project01/image_list.dart';
+import 'package:madcamp_project01/weather_main.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -115,7 +116,7 @@ class _HomePageState extends State<_HomePage>
               ],
             ),
             ImageWidget(),
-            Center(child: Text('Content for Tab 3')),
+            WeatherWidget(),
           ],
         ),
         bottomNavigationBar: Ink(
