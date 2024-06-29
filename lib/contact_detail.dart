@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:madcamp_project01/contact_revise.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ContactDetails extends StatelessWidget {
   final Contact contact;
@@ -27,12 +27,55 @@ class ContactDetails extends StatelessWidget {
     }
   }
 
+  void _deleteContact(BuildContext context) async {
+    await ContactsService.deleteContact(contact);
+    Navigator.pop(context, true);
+  }
+
+  void _deleteConfirmDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.white.withOpacity(0.8),
+          title: Text("Delete Contact"),
+          content: Text("Are you sure you want to delete this contact?"),
+          actions: [
+            TextButton(
+              child: Text("Cancel",
+                  style: TextStyle(
+                    color: Colors.black54,
+                  )),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text("Delete",
+                  style: TextStyle(
+                    color: Colors.red,
+                  )),
+              onPressed: () {
+                _deleteContact(context);
+                Navigator.pop(context, true);
+                Fluttertoast.showToast(
+                    msg: "Contact deleted !",
+                    gravity: ToastGravity.BOTTOM,
+                    backgroundColor: Colors.black87,
+                    fontSize: 17,
+                    textColor: Colors.white,
+                    toastLength: Toast.LENGTH_SHORT);
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
+    double screenWidth = MediaQuery.of(context).size.width;
     double avatarRadius = screenWidth * 0.1;
     var phones = contact.phones ?? [];
     String phoneNumber = phones.isNotEmpty
@@ -58,6 +101,15 @@ class ContactDetails extends StatelessWidget {
               Navigator.pop(context, true);
             },
           ),
+          actions: [
+            // 번호 삭제 버튼
+            IconButton(
+              icon: Icon(Icons.delete_outline_rounded, color: Colors.red),
+              onPressed: () async {
+                _deleteConfirmDialog(context);
+              },
+            )
+          ],
         ),
         body: Center(
           child: Column(
@@ -65,9 +117,9 @@ class ContactDetails extends StatelessWidget {
             children: [
               contact.avatar != null && contact.avatar!.isNotEmpty
                   ? CircleAvatar(
-                backgroundImage: MemoryImage(contact.avatar!),
-                radius: avatarRadius * 2, // 반지름 설정
-              )
+                      backgroundImage: MemoryImage(contact.avatar!),
+                      radius: avatarRadius * 2, // 반지름 설정
+                    )
                   : Spacer(flex: 3),
               CircleAvatar(
                   backgroundColor: Color(0xff98e0ff), // 색깔 변경하기?
@@ -82,68 +134,68 @@ class ContactDetails extends StatelessWidget {
               Spacer(flex: 3),
               Container(
                   child: Row(
-                    children: [
-                      Spacer(flex: 3),
-                      Container(
-                        // 전화 앱 열기 구현
-                        width: 100,
-                        child: GestureDetector(
-                            onTap: () {
-                              _launchPhoneApp();
-                            },
-                            child: Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                color: Color(0xfff7f2f9),
-                                elevation: 2,
-                                child: Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: Icon(Icons.phone)))),
-                      ),
-                      Spacer(flex: 1),
-                      Container(
-                        // 메세지 앱 열기 구현
-                        width: 100,
-                        child: GestureDetector(
-                            onTap: () {
-                              _launchMessageApp();
-                            },
-                            child: Card(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                color: Color(0xfff7f2f9),
-                                elevation: 2,
-                                child: Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: Icon(Icons.message)))),
-                      ),
-                      Spacer(flex: 1),
-                      Container(
-                        // 수정 기능 추가 가능: 연필 아이콘으로 바꾸고 수정 화면으로 변경되도록.
-                        width: 100,
-                        child: GestureDetector(
-                            onTap: () async {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ContactRevise(contact: contact),
-                                  ));
-                            },
-                            child: Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                color: Color(0xfff7f2f9),
-                                elevation: 2,
-                                child: Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: Icon(Icons.edit)))),
-                      ),
-                      Spacer(flex: 3)
-                    ],
-                  )),
+                children: [
+                  Spacer(flex: 3),
+                  Container(
+                    // 전화 앱 열기 구현
+                    width: 100,
+                    child: GestureDetector(
+                        onTap: () {
+                          _launchPhoneApp();
+                        },
+                        child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            color: Color(0xfff7f2f9),
+                            elevation: 2,
+                            child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Icon(Icons.phone)))),
+                  ),
+                  Spacer(flex: 1),
+                  Container(
+                    // 메세지 앱 열기 구현
+                    width: 100,
+                    child: GestureDetector(
+                        onTap: () {
+                          _launchMessageApp();
+                        },
+                        child: Card(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            color: Color(0xfff7f2f9),
+                            elevation: 2,
+                            child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Icon(Icons.message)))),
+                  ),
+                  Spacer(flex: 1),
+                  Container(
+                    // 수정 기능 추가 가능: 연필 아이콘으로 바꾸고 수정 화면으로 변경되도록.
+                    width: 100,
+                    child: GestureDetector(
+                        onTap: () async {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ContactRevise(contact: contact),
+                              ));
+                        },
+                        child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            color: Color(0xfff7f2f9),
+                            elevation: 2,
+                            child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Icon(Icons.edit)))),
+                  ),
+                  Spacer(flex: 3)
+                ],
+              )),
               Spacer(flex: 1),
               Card(
                 shape: RoundedRectangleBorder(
