@@ -34,6 +34,48 @@ class _ContactsWidgetState extends State<ContactsWidget> {
 
   String getInitials(String text) {
     final StringBuffer buffer = StringBuffer();
+    final List<String> CHOSUNG1 = [
+      0x1100,
+      0x1101,
+      0x1102,
+      0x1103,
+      0x1104,
+      0x1105,
+      0x1106,
+      0x1107,
+      0x1108,
+      0x1109,
+      0x110A,
+      0x110B,
+      0x110C,
+      0x110D,
+      0x110E,
+      0x110F,
+      0x1110,
+      0x1111,
+      0x1112
+    ].map((e) => String.fromCharCode(e)).toList();
+    final List<String> CHOSUNG2 = {
+      0x3131,
+      0x3132,
+      0x3134,
+      0x3137,
+      0x3138,
+      0x3139,
+      0x3141,
+      0x3142,
+      0x3143,
+      0x3145,
+      0x3146,
+      0x3147,
+      0x3148,
+      0x3149,
+      0x314a,
+      0x314b,
+      0x314c,
+      0x314d,
+      0x314e
+    }.map((e) => String.fromCharCode(e)).toList();
 
     for (int i = 0; i < text.length; i++) {
       int unicode = text.codeUnitAt(i);
@@ -45,7 +87,9 @@ class _ContactsWidgetState extends State<ContactsWidget> {
 
         // 초성 인덱스 계산
         final int initialIndex = syllableIndex ~/ 588;
-        buffer.write(String.fromCharCode(initialIndex + 0x1100));
+        final int index =
+            CHOSUNG1.indexOf(String.fromCharCode(initialIndex + 0x1100));
+        buffer.write(CHOSUNG2[index]);
       } else {
         // 한글이 아닌 경우에는 원래 문자 추가
         buffer.write(text[i]);
@@ -60,9 +104,7 @@ class _ContactsWidgetState extends State<ContactsWidget> {
     var status = await Permission.contacts.status;
     if (!status.isGranted) {
       // 권한 요청
-      if (await Permission.contacts
-          .request()
-          .isGranted) {
+      if (await Permission.contacts.request().isGranted) {
         // 권한 허용, 연락처 가져오기
         var contacts = await ContactsService.getContacts(
           withThumbnails: true,
@@ -97,8 +139,7 @@ class _ContactsWidgetState extends State<ContactsWidget> {
       });
     } else {
       setState(() {
-        _filteredContacts = _contacts!
-            .where((contact) {
+        _filteredContacts = _contacts!.where((contact) {
           String fullName = contact.displayName!.toLowerCase();
           String initials = getInitials(contact.displayName!).toLowerCase();
           return fullName.contains(query) || initials.contains(query);
@@ -127,76 +168,84 @@ class _ContactsWidgetState extends State<ContactsWidget> {
       appBar: AppBar(
         title: _isSearching
             ? TextField(
-          controller: _searchController,
-          autofocus: true,
-          decoration: InputDecoration(
-            hintText: 'Search...',
-            border: InputBorder.none,
-          ),
-          onChanged: _filterItems,
-        )
-            : Text('Search Example'),
+                controller: _searchController,
+                autofocus: true,
+                decoration: InputDecoration(
+                  hintText: 'Search...',
+                  border: InputBorder.none,
+                ),
+                onChanged: _filterItems,
+              )
+            : TextButton(
+                onPressed: _startSearch,
+                child: Text(
+                  'Search',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey,
+                  ),
+                )),
         actions: _isSearching
             ? [
-          IconButton(
-            icon: Icon(Icons.clear),
-            onPressed: _stopSearch,
-          )
-        ]
+                IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: _stopSearch,
+                )
+              ]
             : [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: _startSearch,
-          )
-        ],
+                IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: _startSearch,
+                )
+              ],
       ),
       body: _contacts == null
           ? Center(child: CircularProgressIndicator(color: Color(0xff98e0ff)))
           : DraggableScrollbar.arrows(
-        backgroundColor: Color(0xff98e0ff),
-        controller: _scrollController,
-        child: ListView.builder(
-          controller: _scrollController,
-          itemCount: _filteredContacts?.length ?? 0,
-          itemBuilder: (BuildContext context, int index) {
-            Contact contact = _filteredContacts![index];
-            return ListTile(
-              leading: contact.avatar != null &&
-                  contact.avatar!.isNotEmpty
-                  ? CircleAvatar(
-                backgroundImage: MemoryImage(contact.avatar!),
-                radius: 20, // 반지름 설정
-              )
-                  : CircleAvatar(
-                  backgroundColor:
-                  Color(0xff98e0ff), // 배경색 설정 (원형 아바타를 만들 때 중요)
-                  radius: 20, // 반지름 설정
-                  child: Icon(
-                    Icons.person, // Icons 클래스의 person 아이콘 사용
-                    color: Colors.white, // 아이콘 색상 설정
-                    size: 28, // 아이콘 크기 설정
-                  )),
-              title: Text(contact.displayName ?? "No Name"),
-              subtitle: Text(
-                contact.phones?.isNotEmpty == true
-                    ? contact.phones!.first.value ?? "No Phone Number"
-                    : "No Phone Number",
+              backgroundColor: Color(0xff98e0ff),
+              controller: _scrollController,
+              child: ListView.builder(
+                controller: _scrollController,
+                itemCount: _filteredContacts?.length ?? 0,
+                itemBuilder: (BuildContext context, int index) {
+                  Contact contact = _filteredContacts![index];
+                  return ListTile(
+                    leading: contact.avatar != null &&
+                            contact.avatar!.isNotEmpty
+                        ? CircleAvatar(
+                            backgroundImage: MemoryImage(contact.avatar!),
+                            radius: 20, // 반지름 설정
+                          )
+                        : CircleAvatar(
+                            backgroundColor:
+                                Color(0xff98e0ff), // 배경색 설정 (원형 아바타를 만들 때 중요)
+                            radius: 20, // 반지름 설정
+                            child: Icon(
+                              Icons.person, // Icons 클래스의 person 아이콘 사용
+                              color: Colors.white, // 아이콘 색상 설정
+                              size: 28, // 아이콘 크기 설정
+                            )),
+                    title: Text(contact.displayName ?? "No Name"),
+                    subtitle: Text(
+                      contact.phones?.isNotEmpty == true
+                          ? contact.phones!.first.value ?? "No Phone Number"
+                          : "No Phone Number",
+                    ),
+                    onTap: () async {
+                      bool? shouldRefresh = await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ContactDetails(contact: contact),
+                          ));
+                      if (shouldRefresh == true) {
+                        getContacts();
+                      }
+                    },
+                  );
+                },
               ),
-              onTap: () async {
-                bool? shouldRefresh = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          ContactDetails(contact: contact),
-                    ));
-                if (shouldRefresh == true) {
-                  getContacts();
-                }
-              },
-            );
-          },
-        ),
-      ),
+            ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xff98e0ff),
         shape: CircleBorder(),
