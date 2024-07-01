@@ -40,6 +40,13 @@ class WeatherWidget extends StatefulWidget {
 }
 
 class _WeatherWidgetState extends State<WeatherWidget> {
+  Future<void> _preloadImage(String url) async{
+    try{
+      await precacheImage(NetworkImage(url), context);
+    } catch (e) {
+    }
+  }
+
   Future<Weather> getWeather() async {
     final String? apiKey = dotenv.env['openWeatherApiKey'];
     final String? apiBaseUrl = dotenv.env['openWeatherApiBaseUrl'];
@@ -55,6 +62,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
       if (response.statusCode == 200) {
         data = json.decode(response.body);
         weather = Weather.fromJson(data);
+        await _preloadImage(weather.iconUrl);
         return weather;
       } else {
         throw Exception('Failed to load weather');
@@ -65,15 +73,16 @@ class _WeatherWidgetState extends State<WeatherWidget> {
     }
   }
 
-  void _initdata() async {
+  late Future<void> _initFuture;
+
+  Future<void> _initdata() async {
     WidgetsFlutterBinding.ensureInitialized();
     await dotenv.load(fileName: "assets/config/.env");
-    await dotenv.load();
   }
 
   @override
   void initState() {
-    _initdata();
+    _initFuture = _initdata();
     super.initState();
   }
 
