@@ -58,56 +58,64 @@ class _ImageWidgetState extends State<ImageWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: _mediaList.isEmpty
-            ? Center(child: CircularProgressIndicator(color: Color(0xff98e0ff)))
-            : DraggableScrollbar.arrows(
-              backgroundColor: Color(0xff98e0ff),
-                controller: _scrollContoller,
-                child: GridView.builder(
-                  controller: _scrollContoller,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    mainAxisSpacing: 5,
-                    crossAxisSpacing: 5,
-                  ),
-                  itemCount: _mediaList.length,
-                  itemBuilder: (context, index) {
-                    return FutureBuilder<Uint8List?>(
-                      future: _mediaList[index].thumbnailData,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done &&
-                            snapshot.data != null) {
-                          return GestureDetector(
-                              onTap: () async {
-                                bool? deleted = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ImageView(
-                                        assets: _mediaList,
-                                        initialIndex: index),
-                                  ),
-                                );
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: Text("Gallery"),
+          centerTitle: true,
+        ),
+        body: Scaffold(
+            body: _mediaList.isEmpty
+                ? Center(
+                    child: CircularProgressIndicator(color: Color(0xff98e0ff)))
+                : DraggableScrollbar.arrows(
+                    backgroundColor: Color(0xff98e0ff),
+                    controller: _scrollContoller,
+                    child: GridView.builder(
+                      controller: _scrollContoller,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        mainAxisSpacing: 5,
+                        crossAxisSpacing: 5,
+                      ),
+                      itemCount: _mediaList.length,
+                      itemBuilder: (context, index) {
+                        return FutureBuilder<Uint8List?>(
+                          future: _mediaList[index].thumbnailData,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                    ConnectionState.done &&
+                                snapshot.data != null) {
+                              return GestureDetector(
+                                  onTap: () async {
+                                    bool? deleted = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ImageView(
+                                            assets: _mediaList,
+                                            initialIndex: index),
+                                      ),
+                                    );
 
-                                if (deleted == true) {
-                                  // 이미지 리스트에서 삭제된 이미지를 제거
-                                  setState(() {
-                                    _mediaList.removeAt(index);
-                                  });
-                                }
-                              },
-                              child: Image.memory(
-                                snapshot.data!,
-                                fit: BoxFit.cover,
-                              ));
-                        } else {
-                          return Center(
-                              child: CircularProgressIndicator(
-                                  color: Color(0xff98e0ff)));
-                        }
+                                    if (deleted == true) {
+                                      // 이미지 리스트에서 삭제된 이미지를 제거
+                                      setState(() {
+                                        _mediaList.removeAt(index);
+                                      });
+                                    }
+                                  },
+                                  child: Image.memory(
+                                    snapshot.data!,
+                                    fit: BoxFit.cover,
+                                  ));
+                            } else {
+                              return Center(
+                                  child: CircularProgressIndicator(
+                                      color: Color(0xff98e0ff)));
+                            }
+                          },
+                        );
                       },
-                    );
-                  },
-                ),
-              ));
+                    ),
+                  )));
   }
 }
