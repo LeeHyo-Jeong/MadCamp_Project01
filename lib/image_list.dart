@@ -12,6 +12,9 @@ class ImageWidget extends StatefulWidget {
 }
 
 class _ImageWidgetState extends State<ImageWidget> {
+
+  bool _isDisposed = false;
+
   List<AssetEntity> _mediaList = [];
   final ScrollController _scrollContoller = ScrollController();
 
@@ -39,6 +42,7 @@ class _ImageWidgetState extends State<ImageWidget> {
       );
 
       // _mediaList 업데이트 하고 UI 다시 빌드
+      if(_isDisposed) return;
       setState(() {
         _mediaList = media;
       });
@@ -51,6 +55,7 @@ class _ImageWidgetState extends State<ImageWidget> {
 
   @override
   void dispose() {
+    _isDisposed = true;
     _scrollContoller.dispose();
     super.dispose();
   }
@@ -98,6 +103,7 @@ class _ImageWidgetState extends State<ImageWidget> {
 
                                     if (deleted == true) {
                                       // 이미지 리스트에서 삭제된 이미지를 제거
+                                      if(_isDisposed) return;
                                       setState(() {
                                         _mediaList.removeAt(index);
                                       });
