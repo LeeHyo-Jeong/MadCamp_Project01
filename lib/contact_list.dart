@@ -171,7 +171,7 @@ class _ContactsWidgetState extends State<ContactsWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: View.of(context).platformDispatcher.platformBrightness == Brightness.light ? Colors.white : Colors.black,
           title: Text("Contacts"),
           centerTitle: true,
         ),

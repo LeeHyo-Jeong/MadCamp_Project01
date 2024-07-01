@@ -28,8 +28,8 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // theme: brightness == Brightness.light ? theme.light() : theme.dark(),
-      theme: theme.light(),
+      theme: brightness == Brightness.light ? theme.light() : theme.dark(),
+      // theme: theme.light(),
       home: LodingPage(),
     );
   }
