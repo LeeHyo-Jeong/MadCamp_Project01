@@ -100,7 +100,6 @@ class _WeatherWidgetState extends State<WeatherWidget> {
         elevation: 0.0,
       ),
       body: Container(
-        height: size.height * 0.8,
         child: Stack(children: [
           Container(
             child: Column(
@@ -146,7 +145,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                       ),
                     ]),
                     SizedBox(
-                      height: 50,
+                      height: size.height * 0.15,
                     ),
                   ],
                 ),
@@ -160,7 +159,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                       } else if (snapshot.hasData) {
                         Weather weather = snapshot.data!;
                         return Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
                                 '${(weather.temperature - 273.15).toStringAsFixed(0)}°',
