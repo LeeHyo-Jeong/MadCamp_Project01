@@ -64,15 +64,15 @@ class _WeatherWidgetState extends State<WeatherWidget> {
     super.initState();
   }
 
-  String getSystemTime(){
+  String getSystemTime() {
     var now = new DateTime.now();
     return new DateFormat("h:mm a").format(now);
   }
 
   @override
-    Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     var date = DateTime.now();
-      return Scaffold(
+    return Scaffold(
         backgroundColor: Color(0xff98e0ff),
         extendBodyBehindAppBar: true,
         appBar: AppBar(
@@ -84,23 +84,24 @@ class _WeatherWidgetState extends State<WeatherWidget> {
             Container(
                 child: FutureBuilder<Weather>(
                     future: getWeather(),
-                    builder: (context, snapshot){
+                    builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return CircularProgressIndicator();
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       }
-                      else if(snapshot.hasData){
+                      else if (snapshot.hasData) {
                         Weather weather = snapshot.data!;
                         return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('${(weather.temperature - 273.15).toStringAsFixed(0)}°C',
-                              style: TextStyle(
-                            fontSize: 50,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        )),
+                              Text('${(weather.temperature - 273.15)
+                                  .toStringAsFixed(0)}°C',
+                                  style: TextStyle(
+                                    fontSize: 50,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  )),
                               Image.network(weather.iconUrl),
                               Text('${weather.description}',
                                   style: TextStyle(
@@ -111,7 +112,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                             ]
                         );
                       }
-                      else{
+                      else {
                         return Text('No data available');
                       }
                     }
@@ -124,43 +125,44 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                   height: 200,
                 ),
                 Text('Daejeon',
-                  style: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  )
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    )
                 ),
                 Row(
-                  children: [
-                    TimerBuilder.periodic(Duration(minutes: 1),
-                        builder: (context){
-                      print('${getSystemTime()}');
-                      return Text(
-                        '${getSystemTime()}',
-                        style: TextStyle(fontSize: 16.0,
-                        color: Colors.white)
-                      );
-                    }
-                    ),
-                    Text(
-                      DateFormat(' - EEEE, ').format(date),
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
+                    children: [
+                      TimerBuilder.periodic(Duration(minutes: 1),
+                          builder: (context) {
+                            print('${getSystemTime()}');
+                            return Text(
+                                '${getSystemTime()}',
+                                style: TextStyle(fontSize: 16.0,
+                                    color: Colors.white)
+                            );
+                          }
                       ),
-                    ),
-                    Text(
-                      DateFormat('d MMM, yyy').format(date),
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
+                      Text(
+                        DateFormat(' - EEEE, ').format(date),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                  ]
+                      Text(
+                        DateFormat('d MMM, yyy').format(date),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ]
                 )
               ],
             ),
           ],
         )
-      );
+    );
   }
+}
