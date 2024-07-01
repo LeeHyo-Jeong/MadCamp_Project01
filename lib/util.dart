@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-TextTheme createTextTheme(
-    BuildContext context) {
+TextTheme createTextTheme(BuildContext context) {
   String bodyFontString = "Alata";
   String displayFontString = "Alkatra";
+  String titleFontString = "Neolli";
   TextTheme baseTextTheme = Theme.of(context).textTheme;
   TextTheme textTheme = baseTextTheme.copyWith(
-    bodyLarge: TextStyle(fontFamily: bodyFontString),
+    bodyLarge: TextStyle(fontFamily: titleFontString, fontSize: 15.0),
     bodyMedium: TextStyle(fontFamily: bodyFontString),
     bodySmall: TextStyle(fontFamily: bodyFontString),
     labelLarge: TextStyle(fontFamily: bodyFontString),

@@ -114,15 +114,21 @@ class _ContactReviseState extends State<ContactRevise> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   SizedBox(height: screenHeight * 0.07,),
-                  CircleAvatar(
-                    radius: avatarRadius * 2.5,
-                    backgroundColor: Color(0xff98e0ff),
-                    child: Icon(
-                      Icons.person,
-                      size: avatarRadius * 3.5,
-                      color: Colors.white,
-                    ),
-                  ),
+                  givencontact.avatar != null && givencontact.avatar!.isNotEmpty
+                      ? CircleAvatar(
+                    backgroundImage: MemoryImage(givencontact.avatar!),
+                    radius: avatarRadius * 2.5, // 반지름 설정
+                  )
+                      : CircleAvatar(
+                      backgroundColor: Color(0xff98e0ff), // 색깔 변경하기?
+                      // 배경색 설정 (원형 아바타를 만들 때 중요)
+                      radius: avatarRadius * 2.5,
+                      // 반지름 설정
+                      child: Icon(
+                        Icons.person, // Icons 클래스의 person 아이콘 사용
+                        color: Colors.white, // 아이콘 색상 설정
+                        size: avatarRadius * 3.5, // 아이콘 크기 설정
+                      )),
                   SizedBox(height: screenHeight * 0.07,),
                   Card(
                     shape: RoundedRectangleBorder(

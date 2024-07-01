@@ -250,7 +250,7 @@ class ContactDetails extends StatelessWidget {
         readOnly: true, // readOnly 속성을 true로 설정
         style: TextStyle(
           color: Colors.black, // 텍스트 색상을 진하게 설정
-          fontWeight: FontWeight.bold, // 글자 두께를 굵게 설정 (선택사항)
+          // fontWeight: FontWeight.bold, // 글자 두께를 굵게 설정 (선택사항)
         ),
         decoration: InputDecoration(
           labelText: label,
