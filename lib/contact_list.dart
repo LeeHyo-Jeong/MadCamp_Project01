@@ -165,111 +165,120 @@ class _ContactsWidgetState extends State<ContactsWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: _isSearching
-            ? TextField(
-                controller: _searchController,
-                autofocus: true,
-                decoration: InputDecoration(
-                  hintText: 'Search...',
-                  border: InputBorder.none,
-                ),
-                onChanged: _filterItems,
-              )
-            : TextButton(
-                onPressed: _startSearch,
-                child: Text(
-                  'Search',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.grey,
-                  ),
-                )),
-        actions: _isSearching
-            ? [
-                IconButton(
-                  icon: Icon(Icons.clear),
-                  onPressed: _stopSearch,
-                )
-              ]
-            : [
-                IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: _startSearch,
-                )
-              ],
-      ),
-      body: _contacts == null
-          ? Center(child: CircularProgressIndicator(color: Color(0xff98e0ff)))
-          : DraggableScrollbar.arrows(
-              backgroundColor: Color(0xff98e0ff),
-              controller: _scrollController,
-              child: ListView.builder(
-                controller: _scrollController,
-                itemCount: _filteredContacts?.length ?? 0,
-                itemBuilder: (BuildContext context, int index) {
-                  Contact contact = _filteredContacts![index];
-                  return ListTile(
-                    leading: contact.avatar != null &&
-                            contact.avatar!.isNotEmpty
-                        ? CircleAvatar(
-                            backgroundImage: MemoryImage(contact.avatar!),
-                            radius: 20, // 반지름 설정
-                          )
-                        : CircleAvatar(
-                            backgroundColor:
-                                Color(0xff98e0ff), // 배경색 설정 (원형 아바타를 만들 때 중요)
-                            radius: 20, // 반지름 설정
-                            child: Icon(
-                              Icons.person, // Icons 클래스의 person 아이콘 사용
-                              color: Colors.white, // 아이콘 색상 설정
-                              size: 28, // 아이콘 크기 설정
-                            )),
-                    title: Text(contact.displayName ?? "No Name"),
-                    subtitle: Text(
-                      contact.phones?.isNotEmpty == true
-                          ? contact.phones!.first.value ?? "No Phone Number"
-                          : "No Phone Number",
-                    ),
-                    onTap: () async {
-                      bool? shouldRefresh = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ContactDetails(contact: contact),
-                          ));
-                      if (shouldRefresh == true) {
-                        setState(() {
-                          getContacts();
-                        });
-                      }
-                    },
-                  );
-                },
-              ),
-            ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xff98e0ff),
-        shape: CircleBorder(),
-        onPressed: () async {
-          bool? shouldRefresh = await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ContactNew(),
-              ));
-          if (shouldRefresh == true) {
-            setState(() {
-              getContacts();
-            });
-          }
-        },
-        child: Icon(
-          Icons.add,
-          color: Color(0xfff7f2f9),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: Text("Contacts"),
+          centerTitle: true,
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat, //
-    );
+        body: Scaffold(
+          appBar: AppBar(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            title: _isSearching
+                ? TextField(
+                    controller: _searchController,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                      hintText: 'Search...',
+                      border: InputBorder.none,
+                    ),
+                    onChanged: _filterItems,
+                  )
+                : TextButton(
+                    onPressed: _startSearch,
+                    child: Text(
+                      'Search',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.grey,
+                      ),
+                    )),
+            actions: _isSearching
+                ? [
+                    IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: _stopSearch,
+                    )
+                  ]
+                : [
+                    IconButton(
+                      icon: Icon(Icons.search),
+                      onPressed: _startSearch,
+                    )
+                  ],
+          ),
+          body: _contacts == null
+              ? Center(
+                  child: CircularProgressIndicator(color: Color(0xff98e0ff)))
+              : DraggableScrollbar.arrows(
+                  backgroundColor: Color(0xff98e0ff),
+                  controller: _scrollController,
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: _filteredContacts?.length ?? 0,
+                    itemBuilder: (BuildContext context, int index) {
+                      Contact contact = _filteredContacts![index];
+                      return ListTile(
+                        leading: contact.avatar != null &&
+                                contact.avatar!.isNotEmpty
+                            ? CircleAvatar(
+                                backgroundImage: MemoryImage(contact.avatar!),
+                                radius: 20, // 반지름 설정
+                              )
+                            : CircleAvatar(
+                                backgroundColor: Color(
+                                    0xff98e0ff), // 배경색 설정 (원형 아바타를 만들 때 중요)
+                                radius: 20, // 반지름 설정
+                                child: Icon(
+                                  Icons.person, // Icons 클래스의 person 아이콘 사용
+                                  color: Colors.white, // 아이콘 색상 설정
+                                  size: 28, // 아이콘 크기 설정
+                                )),
+                        title: Text(contact.displayName ?? "No Name"),
+                        subtitle: Text(
+                          contact.phones?.isNotEmpty == true
+                              ? contact.phones!.first.value ?? "No Phone Number"
+                              : "No Phone Number",
+                        ),
+                        onTap: () async {
+                          bool? shouldRefresh = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ContactDetails(contact: contact),
+                              ));
+                          if (shouldRefresh == true) {
+                            setState(() {
+                              getContacts();
+                            });
+                          }
+                        },
+                      );
+                    },
+                  ),
+                ),
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: Color(0xff98e0ff),
+            shape: CircleBorder(),
+            onPressed: () async {
+              bool? shouldRefresh = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ContactNew(),
+                  ));
+              if (shouldRefresh == true) {
+                setState(() {
+                  getContacts();
+                });
+              }
+            },
+            child: Icon(
+              Icons.add,
+              color: Color(0xfff7f2f9),
+            ),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.endFloat, //
+        ));
   }
 }

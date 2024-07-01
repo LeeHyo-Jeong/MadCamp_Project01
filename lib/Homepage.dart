@@ -33,7 +33,7 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
           _appBarTitle = "Gallery";
           break;
         case 2:
-          _appBarTitle = "Tab 3";
+          _appBarTitle = "Weather";
           break;
       }
     });
@@ -84,26 +84,10 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
         canPop: false,
         onPopInvoked: _deleteConfirmDialog,
         child: Scaffold(
-            appBar: AppBar(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(20),
-                ),
-              ),
-              backgroundColor: Colors.white,
-              title: Text(_appBarTitle),
-              centerTitle: true,
-            ),
             body: TabBarView(
               controller: _tabController,
               children: [
-                Column(
-                  // main의 appbar와 contact page의 appbar 사이 간격 조정
-                  children: [
-                    SizedBox(height: 10),
-                    Expanded(child: ContactsWidget()),
-                  ],
-                ),
+                ContactsWidget(),
                 ImageWidget(),
                 WeatherWidget(),
               ],
@@ -126,7 +110,7 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
                   ),
                   InkWell(
                     splashColor: Color(0xff00bfff),
-                    child: Tab(icon: Icon(Icons.menu)),
+                    child: Tab(icon: Icon(Icons.cloud)),
                   ),
                 ],
               ),
