@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:contacts_service/contacts_service.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'dart:typed_data';
 
 class ContactRevise extends StatefulWidget {
   final Contact contact;
@@ -19,6 +22,7 @@ class _ContactReviseState extends State<ContactRevise> {
   String lastname = "";
   String email = "";
   String phone = "";
+  Uint8List? _imageBytes;
 
   // TextEditingController 생성
   final TextEditingController firstnameController = TextEditingController();
@@ -56,16 +60,64 @@ class _ContactReviseState extends State<ContactRevise> {
     phoneController.dispose();
   }
 
-  Future<void> reviseContact(Contact contact, String firstname, String lastname,
-      String email, String phone) async {
+  Future<void> reviseContact(
+      String firstname, String lastname, String email, String phone) async {
     // 연락처 수정 내용 적용
-    contact.givenName = firstname;
-    contact.familyName = lastname;
-    contact.emails = [Item(label: "email", value: email)];
-    contact.phones = [Item(label: "mobile", value: phone)];
+    // if (_imageBytes != null) contact.avatar = _imageBytes;
+    givencontact.givenName = firstname;
+    givencontact.familyName = lastname;
+
+    print('Email: ${givencontact.emails!.map((e) => e.value).toList()}');
+    print(email);
+
+    if (givencontact.emails == null) {
+      givencontact.emails = [];
+    }
+    if (email.isEmpty) {
+      givencontact.emails!.clear();
+    } else if (givencontact.emails!.isEmpty) {
+      givencontact.emails!.add(Item(label: "email", value: email));
+    } else {
+      givencontact.emails!.first.value = email;
+    }
+
+    print('Phone: ${givencontact.phones!.map((e) => [e.label, e.value]).toList()}');
+    print(phone);
+
+    if (givencontact.phones == null) {
+      givencontact.phones = [];
+    }
+    if (phone.isEmpty) {
+      givencontact.phones!.clear();
+    } else if (givencontact.phones!.isEmpty) {
+      givencontact.phones!.add(Item(label: "mobile", value: phone));
+    } else {
+      givencontact.phones!.first.value = phone;
+    }
 
     // 연락처 수정
-    await ContactsService.updateContact(contact);
+    await ContactsService.updateContact(givencontact);
+
+    Contact updatedContact =
+        (await ContactsService.getContacts(query: firstname)).firstWhere(
+            (c) => c.givenName == firstname && c.familyName == lastname);
+    setState(() {
+      givencontact = updatedContact;
+    });
+  }
+
+  // 이미지를 갤러리에서 가져와서 추가하기
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      final bytes = await File(pickedFile.path).readAsBytes();
+      setState(() {
+        _imageBytes = bytes;
+        givencontact.avatar = _imageBytes;
+      });
+    }
   }
 
   @override
@@ -94,8 +146,7 @@ class _ContactReviseState extends State<ContactRevise> {
         actions: [
           TextButton(
             onPressed: () {
-              reviseContact(givencontact, firstname, lastname, email,
-                  phone); // 연락처가 수정된다.
+              reviseContact(firstname, lastname, email, phone); // 연락처가 수정된다.
               Navigator.pop(context, true);
             },
             child: Text(
@@ -116,21 +167,24 @@ class _ContactReviseState extends State<ContactRevise> {
               SizedBox(
                 height: screenHeight * 0.07,
               ),
-              givencontact.avatar != null && givencontact.avatar!.isNotEmpty
-                  ? CircleAvatar(
-                      backgroundImage: MemoryImage(givencontact.avatar!),
-                      radius: avatarRadius * 2.5, // 반지름 설정
-                    )
-                  : CircleAvatar(
-                      backgroundColor: Color(0xff98e0ff), // 색깔 변경하기?
-                      // 배경색 설정 (원형 아바타를 만들 때 중요)
-                      radius: avatarRadius * 2.5,
-                      // 반지름 설정
-                      child: Icon(
-                        Icons.person, // Icons 클래스의 person 아이콘 사용
-                        color: Colors.white, // 아이콘 색상 설정
-                        size: avatarRadius * 3.5, // 아이콘 크기 설정
-                      )),
+              GestureDetector(
+                  onTap: _pickImage,
+                  child: givencontact.avatar != null &&
+                          givencontact.avatar!.isNotEmpty
+                      ? CircleAvatar(
+                          backgroundImage: MemoryImage(givencontact.avatar!),
+                          radius: avatarRadius * 2.5, // 반지름 설정
+                        )
+                      : CircleAvatar(
+                          backgroundColor: Color(0xff98e0ff), // 색깔 변경하기?
+                          // 배경색 설정 (원형 아바타를 만들 때 중요)
+                          radius: avatarRadius * 2.5,
+                          // 반지름 설정
+                          child: Icon(
+                            Icons.person, // Icons 클래스의 person 아이콘 사용
+                            color: Colors.white, // 아이콘 색상 설정
+                            size: avatarRadius * 3.5, // 아이콘 크기 설정
+                          ))),
               SizedBox(
                 height: screenHeight * 0.07,
               ),
