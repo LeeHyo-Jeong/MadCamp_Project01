@@ -3,6 +3,7 @@ import 'package:photo_manager/photo_manager.dart';
 import 'dart:typed_data';
 import 'package:madcamp_project01/image_detail.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ImageWidget extends StatefulWidget {
   const ImageWidget({super.key});
@@ -12,6 +13,8 @@ class ImageWidget extends StatefulWidget {
 }
 
 class _ImageWidgetState extends State<ImageWidget> {
+
+  final ImagePicker _picker = ImagePicker();
 
   bool _isDisposed = false;
 
@@ -24,6 +27,14 @@ class _ImageWidgetState extends State<ImageWidget> {
     _loadMedia();
   }
 
+  Future<void> _pickImageFromCamera() async{
+    final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+
+    if(photo != null){
+      await PhotoManager.editor.saveImageWithPath(photo.path, title: "Captured Image");
+      _loadMedia();
+    }
+  }
   Future<void> _loadMedia() async {
     // 갤러리 접근 권한 요청
     final PermissionState ps = await PhotoManager.requestPermissionExtend();
@@ -122,6 +133,14 @@ class _ImageWidgetState extends State<ImageWidget> {
                         );
                       },
                     ),
-                  )));
+                  ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _pickImageFromCamera,
+          shape: CircleBorder(),
+          child: Icon(Icons.photo_camera,
+          color: Colors.white),
+          backgroundColor: Color(0xff98e0ff),
+          splashColor: Colors.black38,
+        )));
   }
 }

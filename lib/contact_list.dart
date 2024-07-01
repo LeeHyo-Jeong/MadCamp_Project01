@@ -273,6 +273,7 @@ class _ContactsWidgetState extends State<ContactsWidget> {
           floatingActionButton: FloatingActionButton(
             backgroundColor: Color(0xff98e0ff),
             shape: CircleBorder(),
+            splashColor: Colors.black38,
             onPressed: () async {
               bool? shouldRefresh = await Navigator.push(
                   context,
