@@ -11,6 +11,7 @@ class ContactNew extends StatefulWidget {
 class _ContactNewState extends State<ContactNew> {
   double screenWidth = 0;
   double avatarRadius = 0;
+  double screenHeight = 0;
   String firstname = "";
   String lastname = "";
   String email = "";
@@ -39,13 +40,12 @@ class _ContactNewState extends State<ContactNew> {
   @override
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
+    screenHeight = MediaQuery.of(context).size.height;
     avatarRadius = screenWidth * 0.1;
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return Scaffold(
           appBar: AppBar(
-            backgroundColor: Color(0xfff7f2f9),
+            // backgroundColor: Color(0xfff7f2f9),
             title: Text(
               "New Contact",
               style: TextStyle(
@@ -81,6 +81,7 @@ class _ContactNewState extends State<ContactNew> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  SizedBox(height: screenHeight * 0.07,),
                   CircleAvatar(
                     radius: avatarRadius * 2.5,
                     backgroundColor: Color(0xff98e0ff),
@@ -90,6 +91,7 @@ class _ContactNewState extends State<ContactNew> {
                       color: Colors.white,
                     ),
                   ),
+                  SizedBox(height: screenHeight * 0.07,),
                   Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
@@ -150,8 +152,7 @@ class _ContactNewState extends State<ContactNew> {
                 ],
               ),
             ),
-          )),
-    );
+          ));
   }
 
   Widget _buildTextField({

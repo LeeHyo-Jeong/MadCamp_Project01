@@ -82,11 +82,8 @@ class ContactDetails extends StatelessWidget {
         ? phones.first.value ?? "No Phone Number"
         : "No Phone Number";
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xfff7f2f9),
           title: Text(
             "Contact",
             style: TextStyle(
@@ -147,7 +144,7 @@ class ContactDetails extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            color: Color(0xfff7f2f9),
+                            // color: Color(0xfff7f2f9),
                             elevation: 2,
                             child: Padding(
                                 padding: const EdgeInsets.all(16.0),
@@ -164,7 +161,7 @@ class ContactDetails extends StatelessWidget {
                         child: Card(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
-                            color: Color(0xfff7f2f9),
+                            // color: Color(0xfff7f2f9),
                             elevation: 2,
                             child: Padding(
                                 padding: const EdgeInsets.all(16.0),
@@ -187,7 +184,7 @@ class ContactDetails extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            color: Color(0xfff7f2f9),
+                            // color: Color(0xfff7f2f9),
                             elevation: 2,
                             child: Padding(
                                 padding: const EdgeInsets.all(16.0),
@@ -238,8 +235,7 @@ class ContactDetails extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 
   Widget _buildTextField({
@@ -264,39 +260,6 @@ class ContactDetails extends StatelessWidget {
           ),
         ),
         controller: TextEditingController(text: initialValue),
-      ),
-    );
-  }
-
-  Widget _buildDropdownField({
-    required String label,
-    required List<String> items,
-  }) {
-    String dropdownValue = items.first;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: InputDecorator(
-        decoration: InputDecoration(
-          labelText: label,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-        ),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton<String>(
-            value: dropdownValue,
-            isDense: true,
-            onChanged: (String? newValue) {
-              dropdownValue = newValue!;
-            },
-            items: items.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-          ),
-        ),
       ),
     );
   }

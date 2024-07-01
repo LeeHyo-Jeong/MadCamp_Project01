@@ -93,7 +93,7 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
               ],
             ),
             bottomNavigationBar: Ink(
-              color: Color(0xfff7f2f9),
+              color: Color(0xffEFF4FA),
               child: TabBar(
                 labelColor: Colors.black54,
                 unselectedLabelColor: Colors.black38,

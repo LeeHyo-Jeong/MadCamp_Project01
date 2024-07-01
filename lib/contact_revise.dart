@@ -13,6 +13,7 @@ class ContactRevise extends StatefulWidget {
 class _ContactReviseState extends State<ContactRevise> {
   late Contact givencontact;
   double screenWidth = 0;
+  double screenHeight = 0;
   double avatarRadius = 0;
   String firstname = "";
   String lastname = "";
@@ -70,13 +71,12 @@ class _ContactReviseState extends State<ContactRevise> {
   @override
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
+    screenHeight = MediaQuery.of(context).size.height;
     avatarRadius = screenWidth * 0.1;
 
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
+    return Scaffold(
           appBar: AppBar(
-            backgroundColor: Color(0xfff7f2f9),
+            // backgroundColor: Color(0xfff7f2f9),
             title: Text(
               "Revise Contract",
               style: TextStyle(
@@ -113,6 +113,7 @@ class _ContactReviseState extends State<ContactRevise> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  SizedBox(height: screenHeight * 0.07,),
                   CircleAvatar(
                     radius: avatarRadius * 2.5,
                     backgroundColor: Color(0xff98e0ff),
@@ -122,6 +123,7 @@ class _ContactReviseState extends State<ContactRevise> {
                       color: Colors.white,
                     ),
                   ),
+                  SizedBox(height: screenHeight * 0.07,),
                   Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
@@ -183,7 +185,7 @@ class _ContactReviseState extends State<ContactRevise> {
               ),
             ),
           ),
-        ));
+        );
   }
 
   Widget _buildTextField({
