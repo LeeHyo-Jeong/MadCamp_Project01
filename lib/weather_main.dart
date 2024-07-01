@@ -40,16 +40,10 @@ class WeatherWidget extends StatefulWidget {
 }
 
 class _WeatherWidgetState extends State<WeatherWidget> {
-  Future<void> _preloadImage(String url) async{
-    try{
-      await precacheImage(NetworkImage(url), context);
-    } catch (e) {
-    }
-  }
 
   Future<Weather> getWeather() async {
-    final String? apiKey = dotenv.env['openWeatherApiKey'];
-    final String? apiBaseUrl = dotenv.env['openWeatherApiBaseUrl'];
+    final String? apiKey = await dotenv.env['openWeatherApiKey'];
+    final String? apiBaseUrl = await dotenv.env['openWeatherApiBaseUrl'];
 
     http.Response response;
     var data;
@@ -61,8 +55,8 @@ class _WeatherWidgetState extends State<WeatherWidget> {
 
       if (response.statusCode == 200) {
         data = json.decode(response.body);
+        data = json.decode(response.body);
         weather = Weather.fromJson(data);
-        await _preloadImage(weather.iconUrl);
         return weather;
       } else {
         throw Exception('Failed to load weather');
@@ -73,16 +67,14 @@ class _WeatherWidgetState extends State<WeatherWidget> {
     }
   }
 
-  late Future<void> _initFuture;
-
-  Future<void> _initdata() async {
+  void _initdata() async{
     WidgetsFlutterBinding.ensureInitialized();
     await dotenv.load(fileName: "assets/config/.env");
   }
 
   @override
   void initState() {
-    _initFuture = _initdata();
+    _initdata();
     super.initState();
   }
 
@@ -99,6 +91,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
   @override
   Widget build(BuildContext context) {
     var date = DateTime.now();
+    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Color(0xff98e0ff),
       extendBodyBehindAppBar: true,
@@ -107,6 +100,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
         elevation: 0.0,
       ),
       body: Container(
+        height: size.height * 0.8,
         child: Stack(children: [
           Container(
             child: Column(
@@ -159,9 +153,9 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                 FutureBuilder<Weather>(
                     future: getWeather(),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
+                      if (snapshot.connectionState == ConnectionState.waiting || (snapshot.hasError && snapshot.error.toString() == "Invalid argument(s): No host specified in URI null?appid=null")) {
                         return CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
+                      } else if (snapshot.hasError) { // 왜 에러가 발생하지..?
                         return Text('Error: ${snapshot.error}');
                       } else if (snapshot.hasData) {
                         Weather weather = snapshot.data!;

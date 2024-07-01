@@ -13,6 +13,9 @@ class ContactsWidget extends StatefulWidget {
 }
 
 class _ContactsWidgetState extends State<ContactsWidget> {
+
+  bool _isDisposed = false; // flag to track whether the widget is disposed
+
   List<Contact>? _contacts = null; // ios 오류때문에 초기화 해야함
   final ScrollController _scrollController = ScrollController();
   TextEditingController _searchController = TextEditingController();
@@ -28,6 +31,7 @@ class _ContactsWidgetState extends State<ContactsWidget> {
 
   @override
   void dispose() {
+    _isDisposed = true;
     _scrollController.dispose();
     super.dispose();
   }
@@ -109,6 +113,7 @@ class _ContactsWidgetState extends State<ContactsWidget> {
         var contacts = await ContactsService.getContacts(
           withThumbnails: true,
         );
+        if(_isDisposed) return;
         setState(() {
           _contacts = contacts.toList();
           _contacts?.sort((a, b) => a.displayName!.compareTo(b.displayName!));
@@ -124,6 +129,7 @@ class _ContactsWidgetState extends State<ContactsWidget> {
       var contacts = await ContactsService.getContacts(
         withThumbnails: true,
       );
+      if(_isDisposed) return;
       setState(() {
         _contacts = contacts.toList();
         _contacts?.sort((a, b) => a.displayName!.compareTo(b.displayName!));
