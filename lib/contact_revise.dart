@@ -24,6 +24,8 @@ class _ContactReviseState extends State<ContactRevise> {
   String phone = "";
   Uint8List? _imageBytes;
 
+  bool _isDisposed = false;
+
   // TextEditingController 생성
   final TextEditingController firstnameController = TextEditingController();
   final TextEditingController lastnameController = TextEditingController();
@@ -33,7 +35,7 @@ class _ContactReviseState extends State<ContactRevise> {
   @override
   void initState() {
     super.initState();
-    givencontact = widget.contact;
+    givencontact = Contact.fromMap(widget.contact.toMap());  // 깊은 복사
     firstname = givencontact.givenName ?? "";
     lastname = givencontact.familyName ?? "";
     email = givencontact.emails?.isNotEmpty == true
@@ -52,6 +54,7 @@ class _ContactReviseState extends State<ContactRevise> {
 
   @override
   void dispose() {
+    _isDisposed = true;
     // dispose 메서드 내용...
     super.dispose();
     firstnameController.dispose();
@@ -63,44 +66,42 @@ class _ContactReviseState extends State<ContactRevise> {
   Future<void> reviseContact(
       String firstname, String lastname, String email, String phone) async {
     // 연락처 수정 내용 적용
-    // if (_imageBytes != null) contact.avatar = _imageBytes;
     givencontact.givenName = firstname;
     givencontact.familyName = lastname;
 
-    print('Email: ${givencontact.emails!.map((e) => e.value).toList()}');
-    print(email);
-
-    if (givencontact.emails == null) {
-      givencontact.emails = [];
-    }
+    // 이메일 업데이트 로직
     if (email.isEmpty) {
-      givencontact.emails!.clear();
-    } else if (givencontact.emails!.isEmpty) {
-      givencontact.emails!.add(Item(label: "email", value: email));
+      givencontact.emails = [];
     } else {
-      givencontact.emails!.first.value = email;
+      if (givencontact.emails == null) {
+        givencontact.emails = [Item(label: "email", value: email)];
+      } else if (givencontact.emails!.isEmpty) {
+        givencontact.emails!.add(Item(label: "email", value: email));
+      } else {
+        givencontact.emails!.first.value = email;
+      }
     }
 
-    print('Phone: ${givencontact.phones!.map((e) => [e.label, e.value]).toList()}');
-    print(phone);
-
-    if (givencontact.phones == null) {
-      givencontact.phones = [];
-    }
+    // 전화번호 업데이트 로직
     if (phone.isEmpty) {
-      givencontact.phones!.clear();
-    } else if (givencontact.phones!.isEmpty) {
-      givencontact.phones!.add(Item(label: "mobile", value: phone));
+      givencontact.phones = [];
     } else {
-      givencontact.phones!.first.value = phone;
+      if (givencontact.phones == null) {
+        givencontact.phones = [Item(label: "mobile", value: phone)];
+      } else if (givencontact.phones!.isEmpty) {
+        givencontact.phones!.add(Item(label: "mobile", value: phone));
+      } else {
+        givencontact.phones!.first.value = phone;
+      }
     }
 
     // 연락처 수정
     await ContactsService.updateContact(givencontact);
 
     Contact updatedContact =
-        (await ContactsService.getContacts(query: firstname)).firstWhere(
+    (await ContactsService.getContacts(query: firstname)).firstWhere(
             (c) => c.givenName == firstname && c.familyName == lastname);
+    if(_isDisposed) return;
     setState(() {
       givencontact = updatedContact;
     });
@@ -128,9 +129,8 @@ class _ContactReviseState extends State<ContactRevise> {
 
     return Scaffold(
       appBar: AppBar(
-        // backgroundColor: Color(0xfff7f2f9),
         title: Text(
-          "Revise Contract",
+          "Revise Contact",
           style: TextStyle(
             fontSize: 25,
             color: Colors.black,
@@ -146,7 +146,7 @@ class _ContactReviseState extends State<ContactRevise> {
         actions: [
           TextButton(
             onPressed: () {
-              reviseContact(firstname, lastname, email, phone); // 연락처가 수정된다.
+              reviseContact(firstname, lastname, email, phone);
               Navigator.pop(context, true);
             },
             child: Text(
@@ -170,21 +170,19 @@ class _ContactReviseState extends State<ContactRevise> {
               GestureDetector(
                   onTap: _pickImage,
                   child: givencontact.avatar != null &&
-                          givencontact.avatar!.isNotEmpty
+                      givencontact.avatar!.isNotEmpty
                       ? CircleAvatar(
-                          backgroundImage: MemoryImage(givencontact.avatar!),
-                          radius: avatarRadius * 2.5, // 반지름 설정
-                        )
+                    backgroundImage: MemoryImage(givencontact.avatar!),
+                    radius: avatarRadius * 2.5, // 반지름 설정
+                  )
                       : CircleAvatar(
-                          backgroundColor: Color(0xff98e0ff), // 색깔 변경하기?
-                          // 배경색 설정 (원형 아바타를 만들 때 중요)
-                          radius: avatarRadius * 2.5,
-                          // 반지름 설정
-                          child: Icon(
-                            Icons.person, // Icons 클래스의 person 아이콘 사용
-                            color: Colors.white, // 아이콘 색상 설정
-                            size: avatarRadius * 3.5, // 아이콘 크기 설정
-                          ))),
+                      backgroundColor: Color(0xff98e0ff),
+                      radius: avatarRadius * 2.5,
+                      child: Icon(
+                        Icons.person,
+                        color: Colors.white,
+                        size: avatarRadius * 3.5,
+                      ))),
               SizedBox(
                 height: screenHeight * 0.07,
               ),
@@ -202,6 +200,7 @@ class _ContactReviseState extends State<ContactRevise> {
                         label: "First name",
                         controller: firstnameController,
                         onChanged: (value) {
+                          if(_isDisposed) return;
                           setState(() {
                             firstname = value;
                           });
@@ -213,6 +212,7 @@ class _ContactReviseState extends State<ContactRevise> {
                         label: "Last name",
                         controller: lastnameController,
                         onChanged: (value) {
+                          if(_isDisposed) return;
                           setState(() {
                             lastname = value;
                           });
@@ -224,6 +224,7 @@ class _ContactReviseState extends State<ContactRevise> {
                         label: "Phone",
                         controller: phoneController,
                         onChanged: (value) {
+                          if(_isDisposed) return;
                           setState(() {
                             phone = value;
                           });
@@ -235,6 +236,7 @@ class _ContactReviseState extends State<ContactRevise> {
                         label: "Email",
                         controller: emailController,
                         onChanged: (value) {
+                          if(_isDisposed) return;
                           setState(() {
                             email = value;
                           });

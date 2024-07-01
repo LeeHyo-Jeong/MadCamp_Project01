@@ -45,7 +45,6 @@ class WeatherWidget extends StatefulWidget {
 }
 
 class _WeatherWidgetState extends State<WeatherWidget> {
-
   late Future<Weather> _weatherFuture;
 
   Future<Position> getPosition() async {
@@ -99,8 +98,8 @@ class _WeatherWidgetState extends State<WeatherWidget> {
         throw Exception('Failed to load weather');
       }
     } catch (e) {
-      print(e);
-      throw e;
+      throw Text("Please connect to your network!",
+          style: TextStyle(fontSize: 100));
     }
   }
 
@@ -180,7 +179,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                                         icon: Icon(Icons.location_searching),
                                         color: Colors.white,
                                         onPressed: () {
-                                          setState((){
+                                          setState(() {
                                             _weatherFuture = getWeather();
                                           });
                                         },
