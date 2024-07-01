@@ -13,7 +13,6 @@ class ContactsWidget extends StatefulWidget {
 }
 
 class _ContactsWidgetState extends State<ContactsWidget> {
-
   bool _isDisposed = false; // flag to track whether the widget is disposed
 
   List<Contact>? _contacts = null; // ios 오류때문에 초기화 해야함
@@ -113,7 +112,7 @@ class _ContactsWidgetState extends State<ContactsWidget> {
         var contacts = await ContactsService.getContacts(
           withThumbnails: true,
         );
-        if(_isDisposed) return;
+        if (_isDisposed) return;
         setState(() {
           _contacts = contacts.toList();
           _contacts?.sort((a, b) => a.displayName!.compareTo(b.displayName!));
@@ -129,7 +128,7 @@ class _ContactsWidgetState extends State<ContactsWidget> {
       var contacts = await ContactsService.getContacts(
         withThumbnails: true,
       );
-      if(_isDisposed) return;
+      if (_isDisposed) return;
       setState(() {
         _contacts = contacts.toList();
         _contacts?.sort((a, b) => a.displayName!.compareTo(b.displayName!));
@@ -177,41 +176,49 @@ class _ContactsWidgetState extends State<ContactsWidget> {
           centerTitle: true,
         ),
         body: Scaffold(
-          appBar: AppBar(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            title: _isSearching
-                ? TextField(
-                    controller: _searchController,
-                    autofocus: true,
-                    decoration: InputDecoration(
-                      hintText: 'Search...',
-                      border: InputBorder.none,
-                    ),
-                    onChanged: _filterItems,
-                  )
-                : TextButton(
-                    onPressed: _startSearch,
-                    child: Text(
-                      'Search',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.grey,
-                      ),
-                    )),
-            actions: _isSearching
-                ? [
-                    IconButton(
-                      icon: Icon(Icons.clear),
-                      onPressed: _stopSearch,
-                    )
-                  ]
-                : [
-                    IconButton(
-                      icon: Icon(Icons.search),
-                      onPressed: _startSearch,
-                    )
-                  ],
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(kToolbarHeight),
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                child: AppBar(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
+                  title: _isSearching
+                      ? TextField(
+                          controller: _searchController,
+                          autofocus: true,
+                          decoration: InputDecoration(
+                            hintText: 'Search...',
+                            border: InputBorder.none,
+                          ),
+                          onChanged: _filterItems,
+                        )
+                      : TextButton(
+                          onPressed: _startSearch,
+                          child: Text(
+                            'Search',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.grey,
+                            ),
+                          )),
+                  actions: _isSearching
+                      ? [
+                          IconButton(
+                            icon: Icon(Icons.clear),
+                            onPressed: _stopSearch,
+                          )
+                        ]
+                      : [
+                          IconButton(
+                            icon: Icon(Icons.search),
+                            onPressed: _startSearch,
+                          )
+                        ],
+                ),
+              ),
+            ),
           ),
           body: _contacts == null
               ? Center(

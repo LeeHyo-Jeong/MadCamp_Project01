@@ -4,10 +4,12 @@ import 'package:madcamp_project01/Homepage.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'util.dart';
 import 'theme.dart';
+import 'package:flutter/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: "assets/config/.env");
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: [SystemUiOverlay.top]);
   runApp(MyApp());
 }
 

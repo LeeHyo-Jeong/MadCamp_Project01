@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePage();
 }
 
-class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
+class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late TabController _tabController;
   late String _appBarTitle;
 
@@ -21,6 +21,10 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
     _appBarTitle = "Contacts"; // 초기 AppBar 제목
     _tabController = TabController(length: 3, vsync: this);
     _tabController.addListener(_handleTabSelection);
+
+    // 시스템 네비게이션 바 없애기
+    WidgetsBinding.instance.addObserver(this);
+    _hideSystemBars();
   }
 
   void _handleTabSelection() {
@@ -42,7 +46,20 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     _tabController.dispose();
+    // 시스템 네비게이션 바 없애기
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _hideSystemBars();
+    }
+  }
+
+  void _hideSystemBars() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky, overlays: [SystemUiOverlay.top]);
   }
 
   void _deleteConfirmDialog(bool bool1) async {
