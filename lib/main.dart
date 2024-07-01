@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:madcamp_project01/Homepage.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'util.dart';
+import 'theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,8 +14,20 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final brightness = View.of(context).platformDispatcher.platformBrightness;
+
+    // Retrieves the default theme for the platform
+    //TextTheme textTheme = Theme.of(context).textTheme;
+
+    // Use with Google Fonts package to use downloadable fonts
+    TextTheme textTheme = createTextTheme(context);
+
+    MaterialTheme theme = MaterialTheme(textTheme);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      // theme: brightness == Brightness.light ? theme.light() : theme.dark(),
+      theme: theme.light(),
       home: LodingPage(),
     );
   }
@@ -29,7 +43,7 @@ class _HomePageState extends State<LodingPage>
   @override
   void initState() {
     super.initState();
-    Timer(Duration(milliseconds: 1500), () {
+    Timer(Duration(milliseconds: 3000), () {
       Navigator.pushReplacement(context, MaterialPageRoute(
           builder: (context) => HomePage()
       )

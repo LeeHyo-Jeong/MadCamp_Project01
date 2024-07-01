@@ -4,23 +4,14 @@ import 'package:madcamp_project01/contact_list.dart';
 import 'package:madcamp_project01/image_list.dart';
 import 'package:madcamp_project01/weather_main.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: _HomePage(),
-    );
-  }
+  State<HomePage> createState() => _HomePage();
 }
 
-class _HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<_HomePage>
-    with SingleTickerProviderStateMixin {
+class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late String _appBarTitle;
 
@@ -93,55 +84,52 @@ class _HomePageState extends State<_HomePage>
         canPop: false,
         onPopInvoked: _deleteConfirmDialog,
         child: Scaffold(
-        appBar: AppBar(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(20),
+            appBar: AppBar(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(20),
+                ),
+              ),
+              backgroundColor: Colors.white,
+              title: Text(_appBarTitle),
+              centerTitle: true,
             ),
-          ),
-          backgroundColor: Color(0xff98e0ff),
-          title: Text(
-              _appBarTitle
-          ),
-          centerTitle: true,
-        ),
-        body:
-        TabBarView(
-          controller: _tabController,
-          children: [
-            Column( // main의 appbar와 contact page의 appbar 사이 간격 조정
+            body: TabBarView(
+              controller: _tabController,
               children: [
-                SizedBox(height: 10),
-                Expanded(child: ContactsWidget()),
+                Column(
+                  // main의 appbar와 contact page의 appbar 사이 간격 조정
+                  children: [
+                    SizedBox(height: 10),
+                    Expanded(child: ContactsWidget()),
+                  ],
+                ),
+                ImageWidget(),
+                WeatherWidget(),
               ],
             ),
-            ImageWidget(),
-            WeatherWidget(),
-          ],
-        ),
-        bottomNavigationBar: Ink(
-          color: Color(0xfff7f2f9),
-          child: TabBar(
-            labelColor: Colors.black54,
-            unselectedLabelColor: Colors.black38,
-            indicatorColor: Color(0xff00bfff),
-
-            controller: _tabController,
-            tabs: [
-              InkWell(
-                splashColor: Color(0xff00bfff),
-                child: Tab(icon: Icon(Icons.phone)),
+            bottomNavigationBar: Ink(
+              color: Color(0xfff7f2f9),
+              child: TabBar(
+                labelColor: Colors.black54,
+                unselectedLabelColor: Colors.black38,
+                indicatorColor: Color(0xff00bfff),
+                controller: _tabController,
+                tabs: [
+                  InkWell(
+                    splashColor: Color(0xff00bfff),
+                    child: Tab(icon: Icon(Icons.phone)),
+                  ),
+                  InkWell(
+                    splashColor: Color(0xff00bfff),
+                    child: Tab(icon: Icon(Icons.photo_library)),
+                  ),
+                  InkWell(
+                    splashColor: Color(0xff00bfff),
+                    child: Tab(icon: Icon(Icons.menu)),
+                  ),
+                ],
               ),
-              InkWell(
-                splashColor: Color(0xff00bfff),
-                child: Tab(icon: Icon(Icons.photo_library)),
-              ),
-              InkWell(
-                splashColor: Color(0xff00bfff),
-                child: Tab(icon: Icon(Icons.menu)),
-              ),
-            ],
-          ),
-        )));
+            )));
   }
 }
