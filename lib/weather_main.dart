@@ -8,16 +8,28 @@ import 'package:intl/intl.dart';
 class Weather {
   final String description;
   final double temperature;
+  final int humidity;
+  final int sunrise;
+  final int sunset;
   final iconUrl;
 
-  Weather({required this.description, required this.temperature, required this.iconUrl});
+  Weather(
+      {required this.description,
+      required this.temperature,
+      required this.humidity,
+      required this.sunrise,
+      required this.sunset,
+      required this.iconUrl});
 
   factory Weather.fromJson(Map<String, dynamic> json) {
     return Weather(
       description: json['weather'][0]['description'],
       temperature: json['main']['temp'],
-      iconUrl: 'https://openweathermap.org/img/wn/${json['weather'][0]['icon']}@2x.png',
-
+      humidity: json['main']['humidity'],
+      sunrise: json['sys']['sunrise'],
+      sunset: json['sys']['sunset'],
+      iconUrl:
+          'https://openweathermap.org/img/wn/${json['weather'][0]['icon']}@2x.png',
     );
   }
 }
@@ -56,6 +68,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
   void _initdata() async {
     WidgetsFlutterBinding.ensureInitialized();
     await dotenv.load(fileName: "assets/config/.env");
+    await dotenv.load();
   }
 
   @override
@@ -69,80 +82,51 @@ class _WeatherWidgetState extends State<WeatherWidget> {
     return new DateFormat("h:mm a").format(now);
   }
 
+  String formatTimeStamp(int timestamp){
+    var date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+    return DateFormat("h:mm a").format(date);
+  }
+
   @override
   Widget build(BuildContext context) {
     var date = DateTime.now();
     return Scaffold(
-        backgroundColor: Color(0xff98e0ff),
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-        ),
-        body: Stack(
-          children: [
-            Container(
-                child: FutureBuilder<Weather>(
-                    future: getWeather(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      }
-                      else if (snapshot.hasData) {
-                        Weather weather = snapshot.data!;
-                        return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('${(weather.temperature - 273.15)
-                                  .toStringAsFixed(0)}°C',
-                                  style: TextStyle(
-                                    fontSize: 50,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  )),
-                              Image.network(weather.iconUrl),
-                              Text('${weather.description}',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white,
-                                  )
-                              ),
-                            ]
-                        );
-                      }
-                      else {
-                        return Text('No data available');
-                      }
-                    }
-                )
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      backgroundColor: Color(0xff98e0ff),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+      ),
+      body: Container(
+        child: Stack(children: [
+          Container(
+            child: Column(
               children: [
-                SizedBox(
-                  height: 200,
-                ),
-                Text('Daejeon',
-                    style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    )
-                ),
-                Row(
-                    children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(width: 10),
+                        Text('Daejeon',
+                            style: TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            )),
+                      ],
+                    ),
+                    Row(children: [
+                      SizedBox(width: 10),
                       TimerBuilder.periodic(Duration(minutes: 1),
                           builder: (context) {
-                            print('${getSystemTime()}');
-                            return Text(
-                                '${getSystemTime()}',
-                                style: TextStyle(fontSize: 16.0,
-                                    color: Colors.white)
-                            );
-                          }
-                      ),
+                        return Text('${getSystemTime()}',
+                            style:
+                                TextStyle(fontSize: 16.0, color: Colors.white));
+                      }),
                       Text(
                         DateFormat(' - EEEE, ').format(date),
                         style: TextStyle(
@@ -157,12 +141,64 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                           color: Colors.white,
                         ),
                       ),
-                    ]
-                )
+                    ]),
+                    SizedBox(
+                      height: 50,
+                    ),
+                  ],
+                ),
+                FutureBuilder<Weather>(
+                    future: getWeather(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else if (snapshot.hasData) {
+                        Weather weather = snapshot.data!;
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                                '${(weather.temperature - 273.15).toStringAsFixed(0)}°',
+                                style: TextStyle(
+                                  fontSize: 70,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            Image.network(weather.iconUrl),
+                            Text('${weather.description}',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                )),
+                            SizedBox(height: 10),
+                            Text('humidity: ${weather.humidity}%',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white
+                            )),
+                            Text('sunrise: ${formatTimeStamp(weather.sunrise)}',
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white
+                                )),
+                            Text('sunset: ${formatTimeStamp(weather.sunset)}',
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white
+                                ))
+                          ],
+                        );
+                      } else {
+                        return Text('No data available');
+                      }
+                    }),
               ],
             ),
-          ],
-        )
+          ),
+        ]),
+      ),
     );
   }
 }
