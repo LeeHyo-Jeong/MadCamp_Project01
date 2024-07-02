@@ -5,7 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:timer_builder/timer_builder.dart';
 import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:timezone/timezone.dart' as tz;
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Weather {
   final String description;
@@ -50,7 +50,8 @@ class WeatherWidget extends StatefulWidget {
   _WeatherWidgetState createState() => _WeatherWidgetState();
 }
 
-class _WeatherWidgetState extends State<WeatherWidget> with AutomaticKeepAliveClientMixin {
+class _WeatherWidgetState extends State<WeatherWidget>
+    with AutomaticKeepAliveClientMixin {
   late Future<Weather> _weatherFuture;
 
   @override
@@ -107,11 +108,11 @@ class _WeatherWidgetState extends State<WeatherWidget> with AutomaticKeepAliveCl
 
         return weather;
       } else {
-        throw Exception('Failed to load weather');
+        throw Exception('Failed to load weather: ${response.body}');
       }
     } catch (e) {
-      throw Text("Please connect to your network!",
-          style: TextStyle(fontSize: 100));
+      print("Error occured: $e");
+      rethrow;
     }
   }
 
@@ -129,14 +130,13 @@ class _WeatherWidgetState extends State<WeatherWidget> with AutomaticKeepAliveCl
   }
 
   String formatTimeStamp(int timestamp, int timezone) {
-    // var date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
-    // return DateFormat("h:mm a").format(date);
-
-    var date = DateTime.fromMillisecondsSinceEpoch((timestamp + timezone) * 1000, isUtc: true);
+    var date = DateTime.fromMillisecondsSinceEpoch(
+        (timestamp + timezone) * 1000,
+        isUtc: true);
     return DateFormat("h:mm a").format(date);
   }
 
-  String getCurrentTime(DateTime now){
+  String getCurrentTime(DateTime now) {
     return DateFormat("h:mm a").format(now);
   }
 
@@ -183,12 +183,18 @@ class _WeatherWidgetState extends State<WeatherWidget> with AutomaticKeepAliveCl
                                   children: [
                                     Row(children: [
                                       SizedBox(width: 10),
-                                      Text('${weather.cityName}',
-                                          style: TextStyle(
-                                            fontSize: 40,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                          )),
+                                      Flexible(
+                                          child: RichText(
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        text: TextSpan(
+                                            text: '${weather.cityName}',
+                                            style: TextStyle(
+                                              fontSize: 40,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            )),
+                                      )),
                                       IconButton(
                                         icon: Icon(Icons.location_searching),
                                         color: Colors.white,
@@ -204,7 +210,8 @@ class _WeatherWidgetState extends State<WeatherWidget> with AutomaticKeepAliveCl
                                       TimerBuilder.periodic(
                                           Duration(minutes: 1),
                                           builder: (context) {
-                                        return Text('${getCurrentTime(weather.currentTime)}',
+                                        return Text(
+                                            '${getCurrentTime(weather.currentTime)}',
                                             style: TextStyle(
                                                 fontSize: 16.0,
                                                 color: Colors.white));
@@ -237,7 +244,8 @@ class _WeatherWidgetState extends State<WeatherWidget> with AutomaticKeepAliveCl
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                         )),
-                                    Image.network(weather.iconUrl),
+                                    CachedNetworkImage(imageUrl: weather.iconUrl),
+                                    //Image.network(weather.iconUrl),
                                     Text('${weather.description}',
                                         style: TextStyle(
                                           fontSize: 20,
