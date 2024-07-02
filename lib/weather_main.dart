@@ -146,7 +146,7 @@ class _WeatherWidgetState extends State<WeatherWidget>
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Color(0xff98e0ff),
+      backgroundColor: View.of(context).platformDispatcher.platformBrightness == Brightness.light ? Color(0xff98e0ff) : Colors.black,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
