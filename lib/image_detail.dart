@@ -86,10 +86,10 @@ class _ImageViewState extends State<ImageView> {
   }
 
   void _showMetadata(BuildContext context, AssetEntity asset) async {
-    DateTime date = asset.createDateTime;
-    double? latitude = asset.latitude;
-    double? longitude = asset.longitude;
-
+    DateTime date = await asset.createDateTime;
+    int width = await asset.width;
+    int height = await asset.height;
+    String? name = await asset.title;
     String formattedDate = DateFormat('yyyy-MM-dd - kk:mm').format(date);
 
     showModalBottomSheet(
@@ -109,6 +109,39 @@ class _ImageViewState extends State<ImageView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              ListTile(
+                title: Row(children: [
+                  Icon(
+                    Icons.title,
+                    size: 17,
+                    color: View.of(context)
+                        .platformDispatcher
+                        .platformBrightness ==
+                        Brightness.light
+                        ? Colors.black
+                        : Colors.white,
+                  ),
+                  Text(' Name',
+                      style: TextStyle(
+                        color: View.of(context)
+                            .platformDispatcher
+                            .platformBrightness ==
+                            Brightness.light
+                            ? Colors.black
+                            : Colors.white,
+                      )),
+                ]),
+                subtitle:
+                Text('$name',
+                    style: TextStyle(
+                      color: View.of(context)
+                          .platformDispatcher
+                          .platformBrightness ==
+                          Brightness.light
+                          ? Colors.black54
+                          : Colors.white,
+                    ))
+              ),
               ListTile(
                 title: Row(children: [
                   Icon(
@@ -144,7 +177,7 @@ class _ImageViewState extends State<ImageView> {
               ListTile(
                 title: Row(children: [
                   Icon(
-                    Icons.location_on_outlined,
+                    Icons.photo_size_select_actual_outlined,
                     size: 17,
                     color: View.of(context)
                                 .platformDispatcher
@@ -153,7 +186,7 @@ class _ImageViewState extends State<ImageView> {
                         ? Colors.black
                         : Colors.white,
                   ),
-                  Text(' Location',
+                  Text(' Size',
                       style: TextStyle(
                         color: View.of(context)
                                     .platformDispatcher
@@ -163,8 +196,8 @@ class _ImageViewState extends State<ImageView> {
                             : Colors.white,
                       )),
                 ]),
-                subtitle: (latitude != null && longitude != null)
-                    ? Text('Latitude: $latitude, Longitude: $longitude',
+                subtitle: (width != null && height != null)
+                    ? Text('$width x $height',
                         style: TextStyle(
                           color: View.of(context)
                                       .platformDispatcher
@@ -173,7 +206,7 @@ class _ImageViewState extends State<ImageView> {
                               ? Colors.black54
                               : Colors.white,
                         ))
-                    : Text('No Location Info',
+                    : Text('No Size Info',
                         style: TextStyle(color: View.of(context).platformDispatcher.platformBrightness == Brightness.light ? Colors.black54 : Colors.white,)),
               ),
             ],
