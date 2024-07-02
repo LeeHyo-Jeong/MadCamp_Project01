@@ -64,7 +64,7 @@ class _HomePageState extends State<LodingPage>
       child: MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
         child: Scaffold(
-          backgroundColor: Color(0xff98e0ff),
+          backgroundColor: View.of(context).platformDispatcher.platformBrightness == Brightness.light ? Color(0xff98e0ff) : Colors.black,
           body: Container(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,

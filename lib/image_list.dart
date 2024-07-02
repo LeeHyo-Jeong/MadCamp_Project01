@@ -142,8 +142,9 @@ class _ImageWidgetState extends State<ImageWidget> with AutomaticKeepAliveClient
           onPressed: _pickImageFromCamera,
           shape: CircleBorder(),
           child: Icon(Icons.photo_camera,
-          color: Colors.white),
-          backgroundColor: Color(0xff98e0ff),
+          color: View.of(context).platformDispatcher.platformBrightness == Brightness.light ? Color(0xfff7f2f9) : Colors.grey, ),
+          backgroundColor: View.of(context).platformDispatcher.platformBrightness == Brightness.light ? Color(0xff98e0ff) : Color(
+              0xffbee6ff),
           splashColor: Colors.black38,
         )));
   }
