@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:timer_builder/timer_builder.dart';
 import 'package:intl/intl.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class Weather {
   final String description;
@@ -14,6 +15,9 @@ class Weather {
   final int sunset;
   final iconUrl;
   final cityName;
+  final int timeZone;
+
+  DateTime currentTime = DateTime.now();
 
   Weather({
     required this.description,
@@ -23,6 +27,7 @@ class Weather {
     required this.sunset,
     required this.iconUrl,
     required this.cityName,
+    required this.timeZone,
   });
 
   factory Weather.fromJson(Map<String, dynamic> json) {
@@ -35,6 +40,7 @@ class Weather {
       iconUrl:
           'https://openweathermap.org/img/wn/${json['weather'][0]['icon']}@2x.png',
       cityName: json['name'],
+      timeZone: json['timezone'],
     );
   }
 }
@@ -44,8 +50,11 @@ class WeatherWidget extends StatefulWidget {
   _WeatherWidgetState createState() => _WeatherWidgetState();
 }
 
-class _WeatherWidgetState extends State<WeatherWidget> {
+class _WeatherWidgetState extends State<WeatherWidget> with AutomaticKeepAliveClientMixin {
   late Future<Weather> _weatherFuture;
+
+  @override
+  bool get wantKeepAlive => true;
 
   Future<Position> getPosition() async {
     bool serviceEnabled;
@@ -91,8 +100,11 @@ class _WeatherWidgetState extends State<WeatherWidget> {
 
       if (response.statusCode == 200) {
         data = json.decode(response.body);
-        data = json.decode(response.body);
         weather = Weather.fromJson(data);
+
+        var nowUtc = DateTime.now().toUtc();
+        weather.currentTime = nowUtc.add(Duration(seconds: weather.timeZone));
+
         return weather;
       } else {
         throw Exception('Failed to load weather');
@@ -116,14 +128,16 @@ class _WeatherWidgetState extends State<WeatherWidget> {
     super.initState();
   }
 
-  String getSystemTime() {
-    var now = new DateTime.now();
-    return new DateFormat("h:mm a").format(now);
+  String formatTimeStamp(int timestamp, int timezone) {
+    // var date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+    // return DateFormat("h:mm a").format(date);
+
+    var date = DateTime.fromMillisecondsSinceEpoch((timestamp + timezone) * 1000, isUtc: true);
+    return DateFormat("h:mm a").format(date);
   }
 
-  String formatTimeStamp(int timestamp) {
-    var date = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
-    return DateFormat("h:mm a").format(date);
+  String getCurrentTime(DateTime now){
+    return DateFormat("h:mm a").format(now);
   }
 
   @override
@@ -190,7 +204,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                                       TimerBuilder.periodic(
                                           Duration(minutes: 1),
                                           builder: (context) {
-                                        return Text('${getSystemTime()}',
+                                        return Text('${getCurrentTime(weather.currentTime)}',
                                             style: TextStyle(
                                                 fontSize: 16.0,
                                                 color: Colors.white));
@@ -234,11 +248,11 @@ class _WeatherWidgetState extends State<WeatherWidget> {
                                         style: TextStyle(
                                             fontSize: 14, color: Colors.white)),
                                     Text(
-                                        'sunrise: ${formatTimeStamp(weather.sunrise)}',
+                                        'sunrise: ${formatTimeStamp(weather.sunrise, weather.timeZone)}',
                                         style: TextStyle(
                                             fontSize: 14, color: Colors.white)),
                                     Text(
-                                        'sunset: ${formatTimeStamp(weather.sunset)}',
+                                        'sunset: ${formatTimeStamp(weather.sunset, weather.timeZone)}',
                                         style: TextStyle(
                                             fontSize: 14, color: Colors.white))
                                   ],
