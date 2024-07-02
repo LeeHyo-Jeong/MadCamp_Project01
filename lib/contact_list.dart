@@ -4,6 +4,7 @@ import 'package:madcamp_project01/contact_new.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ContactsWidget extends StatefulWidget {
   const ContactsWidget({super.key});
@@ -173,8 +174,19 @@ class _ContactsWidgetState extends State<ContactsWidget> with AutomaticKeepAlive
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery
+        .of(context)
+        .size;
+
     return Scaffold(
         appBar: AppBar(
+          leading: Container(
+            child: SvgPicture.asset(
+              'assets/images/spectrum_icon.svg',
+              width: size.width * 0.616666,
+              height: size.height * 0.0859375,
+            ),
+          ),
           backgroundColor: View.of(context).platformDispatcher.platformBrightness == Brightness.light ? Colors.white : Colors.black,
           title: Text("Contacts"),
           centerTitle: true,

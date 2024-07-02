@@ -50,6 +50,7 @@ dependencies:
   timezone: ^0.9.4
   cached_network_image: ^3.3.1
   modal_bottom_sheet: ^3.0.0
+  flutter_svg: ^2.0.10
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +70,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/config/
+    - assets/images/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -96,7 +98,9 @@ flutter:
     - family: Neolli
       fonts:
         - asset: assets/fonts/EliceDXNEolli-Medium.ttf
-
+    - family: Comfortaa
+      fonts:
+        - asset: assets/fonts/Comfortaa-Bold.ttf
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

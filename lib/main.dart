@@ -7,6 +7,7 @@ import 'theme.dart';
 import 'package:flutter/services.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
+
 void main() async {
   tz.initializeTimeZones(); // 타임존 데이터 초기화
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,6 +60,9 @@ class _HomePageState extends State<LodingPage>
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
+    final Size size = MediaQuery
+        .of(context)
+        .size;
 
     return PopScope(
       child: MediaQuery(
@@ -70,13 +74,16 @@ class _HomePageState extends State<LodingPage>
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 SizedBox(height: screenHeight * 0.384375),
-                // Container(
-                //   child: SvgPicture.asset(
-                //     'assets/images/public/PurpleLogo.svg',
-                //     width: screenWidth * 0.616666,
-                //     height: screenHeight * 0.0859375,
-                //   ),
-                // ),
+                /*
+                Container(
+                   child: SvgPicture.asset(
+                     'assets/images/spectrum_icon.svg',
+                     width: screenWidth * 0.616666,
+                     height: screenHeight * 0.0859375,
+                   ),
+                 ),
+                 */
+                Text("Spectrum", style: TextStyle(fontFamily: "Comfortaa", color: Colors.white, fontSize: size.height * 0.08)),
                 Expanded(child: SizedBox()),
                 Align(
                   child: Text(
