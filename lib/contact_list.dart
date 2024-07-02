@@ -12,20 +12,24 @@ class ContactsWidget extends StatefulWidget {
   State<ContactsWidget> createState() => _ContactsWidgetState();
 }
 
-class _ContactsWidgetState extends State<ContactsWidget> {
+class _ContactsWidgetState extends State<ContactsWidget> with AutomaticKeepAliveClientMixin {
   bool _isDisposed = false; // flag to track whether the widget is disposed
 
-  List<Contact>? _contacts = null; // ios 오류때문에 초기화 해야함
+  List<Contact>? _contacts; // ios 오류때문에 초기화 해야함
   final ScrollController _scrollController = ScrollController();
   TextEditingController _searchController = TextEditingController();
   bool _isSearching = false;
   List<Contact>? _filteredContacts = [];
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   void initState() {
     super.initState();
-    _filteredContacts = _contacts;
-    getContacts();
+    if (_contacts == null) {
+      getContacts();
+    }
   }
 
   @override

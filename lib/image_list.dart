@@ -12,7 +12,7 @@ class ImageWidget extends StatefulWidget {
   State<ImageWidget> createState() => _ImageWidgetState();
 }
 
-class _ImageWidgetState extends State<ImageWidget> {
+class _ImageWidgetState extends State<ImageWidget> with AutomaticKeepAliveClientMixin {
 
   final ImagePicker _picker = ImagePicker();
 
@@ -20,6 +20,9 @@ class _ImageWidgetState extends State<ImageWidget> {
 
   List<AssetEntity> _mediaList = [];
   final ScrollController _scrollContoller = ScrollController();
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
