@@ -83,7 +83,7 @@ class _HomePageState extends State<LodingPage>
                    ),
                  ),
                  */
-                Text("Spectrum", style: TextStyle(fontFamily: "Comfortaa", color: Colors.white, fontSize: size.height * 0.08)),
+                Text("Spectrum", style: TextStyle(fontFamily: "Comfortaa", color: Colors.white, fontSize: size.width * 0.15)),
                 Expanded(child: SizedBox()),
                 Align(
                   child: Text(
