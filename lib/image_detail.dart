@@ -104,8 +104,8 @@ class _ImageViewState extends State<ImageView> {
             right: 10,
             bottom: 15,
           ),
-          decoration: const BoxDecoration(
-            color: Colors.white,
+          decoration: BoxDecoration(
+            color: View.of(context).platformDispatcher.platformBrightness == Brightness.light ? Colors.white : Colors.black,
             borderRadius: BorderRadius.all(Radius.circular(20)),
           ),
           child: Column(
@@ -176,7 +176,7 @@ class _ImageViewState extends State<ImageView> {
                               : Colors.white,
                         ))
                     : Text('No Location Info',
-                        style: TextStyle(color: Colors.black54)),
+                        style: TextStyle(color: View.of(context).platformDispatcher.platformBrightness == Brightness.light ? Colors.black54 : Colors.white,)),
               ),
             ],
           ),
