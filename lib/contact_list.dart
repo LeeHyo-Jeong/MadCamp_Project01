@@ -119,7 +119,7 @@ class _ContactsWidgetState extends State<ContactsWidget> with AutomaticKeepAlive
         if (_isDisposed) return;
         setState(() {
           _contacts = contacts.toList();
-          _contacts?.sort((a, b) => a.displayName!.compareTo(b.displayName!));
+          _contacts?.sort((a, b) => compareStrings(a.displayName!, b.displayName!)); //  a.displayName!.compareTo(b.displayName!)
         });
         _filteredContacts = _contacts;
       } else {
@@ -135,7 +135,7 @@ class _ContactsWidgetState extends State<ContactsWidget> with AutomaticKeepAlive
       if (_isDisposed) return;
       setState(() {
         _contacts = contacts.toList();
-        _contacts?.sort((a, b) => a.displayName!.compareTo(b.displayName!));
+        _contacts?.sort((a, b) => compareStrings(a.displayName!, b.displayName!)); //  a.displayName!.compareTo(b.displayName!)
       });
       _filteredContacts = _contacts;
     }
@@ -275,7 +275,8 @@ class _ContactsWidgetState extends State<ContactsWidget> with AutomaticKeepAlive
                   ),
                 ),
           floatingActionButton: FloatingActionButton(
-            backgroundColor: Color(0xff98e0ff),
+            backgroundColor: View.of(context).platformDispatcher.platformBrightness == Brightness.light ? Color(0xff98e0ff) : Color(
+                0xffbee6ff),
             shape: CircleBorder(),
             splashColor: Colors.black38,
             onPressed: () async {
@@ -292,11 +293,60 @@ class _ContactsWidgetState extends State<ContactsWidget> with AutomaticKeepAlive
             },
             child: Icon(
               Icons.add,
-              color: Color(0xfff7f2f9),
+              color: View.of(context).platformDispatcher.platformBrightness == Brightness.light ? Color(0xfff7f2f9) : Colors.grey,
             ),
           ),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.endFloat, //
         ));
+  }
+
+  int compareStrings(String a, String b) {
+    // 한글, 영어, 숫자 여부를 확인하여 우선순위 정하기
+    String a_first_character = a.isNotEmpty ? a[0] : '';
+    String b_first_character = b.isNotEmpty ? b[0] : '';
+    int aPriority = getCharacterPriority(a_first_character);
+    int bPriority = getCharacterPriority(b_first_character);
+
+    if (aPriority == bPriority) {
+      int result = a_first_character.compareTo(b_first_character);
+      if (result == 0){
+        return compareStrings(a.substring(1), b.substring(1));
+      }
+      else{
+        return result;
+      }
+    }
+    else {
+      return aPriority.compareTo(bPriority);
+    }
+  }
+
+  int getCharacterPriority(String char) {
+    if (isKorean(char)) {
+      return 0; // 한글
+    } else if (isAlphabet(char)) {
+      return 1; // 영어
+    } else if (isDigit(char)) {
+      return 2; // 숫자
+    } else {
+      return 3; // 그 외
+    }
+  }
+
+  bool isKorean(String char) {
+    final pattern = RegExp(
+        r'^[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$'); // 한글 정규식 (초성, 중성, 종성으로 구성된 문자열)
+    return pattern.hasMatch(char);
+  }
+
+  bool isAlphabet(String char) {
+    final pattern = RegExp(r'^[a-zA-Z]*$'); // 영어 정규식
+    return pattern.hasMatch(char);
+  }
+
+  bool isDigit(String char) {
+    final pattern = RegExp(r'^[0-9]*$'); // 숫자 정규식
+    return pattern.hasMatch(char);
   }
 }

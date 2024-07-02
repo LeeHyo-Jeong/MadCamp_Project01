@@ -31,12 +31,11 @@ class _ContactNewState extends State<ContactNew> {
       String firstname, String lastname, String email, String phone) async {
     // 새 연락처 생성
     final newContact = Contact(
-      givenName: firstname,
-      familyName: lastname,
-      emails: [Item(label: "email", value: email)],
-      phones: [Item(label: "mobile", value: phone)],
-      avatar: _imageBytes
-    );
+        givenName: firstname,
+        familyName: lastname,
+        emails: [Item(label: "email", value: email)],
+        phones: [Item(label: "mobile", value: phone)],
+        avatar: _imageBytes);
 
     // 연락처 추가
     await ContactsService.addContact(newContact);
@@ -102,9 +101,10 @@ class _ContactNewState extends State<ContactNew> {
                 SizedBox(
                   height: screenHeight * 0.07,
                 ),
-                GestureDetector(
-                    onTap: _pickImage,
-                    child: _imageBytes != null
+                Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    _imageBytes != null
                         ? CircleAvatar(
                             backgroundImage: MemoryImage(_imageBytes!),
                             radius: avatarRadius * 2.5, // 반지름 설정
@@ -118,7 +118,27 @@ class _ContactNewState extends State<ContactNew> {
                               Icons.person, // Icons 클래스의 person 아이콘 사용
                               color: Colors.white, // 아이콘 색상 설정
                               size: avatarRadius * 3.5, // 아이콘 크기 설정
-                            ))),
+                            )),
+                    Positioned(
+                        bottom: 10,
+                        right: 10,
+                        child: GestureDetector(
+                            onTap: _pickImage,
+                            child: Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                      color: Colors.grey, width: 2.0),
+                                ),
+                                child: CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    radius: 20,
+                                    child: Icon(
+                                      Icons.edit,
+                                      color: Colors.grey,
+                                    ))))),
+                  ],
+                ),
                 SizedBox(
                   height: screenHeight * 0.07,
                 ),

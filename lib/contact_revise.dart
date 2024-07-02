@@ -170,28 +170,37 @@ class _ContactReviseState extends State<ContactRevise> {
               Stack(
                 alignment: Alignment.center,
                 children: <Widget>[
-                  GestureDetector(
-                      onTap: _pickImage,
-                      child: givencontact.avatar != null &&
-                              givencontact.avatar!.isNotEmpty
-                          ? CircleAvatar(
-                              backgroundImage:
-                                  MemoryImage(givencontact.avatar!),
-                              radius: avatarRadius * 2.5, // 반지름 설정
-                            )
-                          : CircleAvatar(
-                              backgroundColor: Color(0xff98e0ff),
-                              radius: avatarRadius * 2.5,
-                              child: Icon(
-                                Icons.person,
-                                color: Colors.white,
-                                size: avatarRadius * 3.5,
-                              ))),
+                  givencontact.avatar != null && givencontact.avatar!.isNotEmpty
+                      ? CircleAvatar(
+                          backgroundImage: MemoryImage(givencontact.avatar!),
+                          radius: avatarRadius * 2.5, // 반지름 설정
+                        )
+                      : CircleAvatar(
+                          backgroundColor: Color(0xff98e0ff),
+                          radius: avatarRadius * 2.5,
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.white,
+                            size: avatarRadius * 3.5,
+                          )),
                   Positioned(
-                    bottom: 15,
-                    right: 15,
-                    child: Icon(Icons.photo_camera_back)
-                  ),
+                      bottom: 10,
+                      right: 10,
+                      child: GestureDetector(
+                          onTap: _pickImage,
+                          child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border:
+                                    Border.all(color: Colors.grey, width: 2.0),
+                              ),
+                              child: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  radius: 20,
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: Colors.grey,
+                                  ))))),
                 ],
               ),
               SizedBox(

@@ -117,16 +117,19 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin, Wid
                 controller: _tabController,
                 tabs: [
                   InkWell(
-                    splashColor: Color(0xff00bfff),
-                    child: Tab(icon: Icon(Icons.phone)),
+                    splashColor: View.of(context).platformDispatcher.platformBrightness == Brightness.light ? Color(0xff00bfff) : Colors.white,
+                    child: Tab(icon: Icon(Icons.phone, color: View.of(context).platformDispatcher.platformBrightness == Brightness.light ? Colors.grey : Color(
+                        0xffbee6ff),)),
                   ),
                   InkWell(
-                    splashColor: Color(0xff00bfff),
-                    child: Tab(icon: Icon(Icons.photo_library)),
+                    splashColor: View.of(context).platformDispatcher.platformBrightness == Brightness.light ? Color(0xff00bfff) : Colors.white,
+                    child: Tab(icon: Icon(Icons.photo_library, color: View.of(context).platformDispatcher.platformBrightness == Brightness.light ? Colors.grey : Color(
+                        0xffbee6ff),)),
                   ),
                   InkWell(
-                    splashColor: Color(0xff00bfff),
-                    child: Tab(icon: Icon(Icons.cloud)),
+                    splashColor: View.of(context).platformDispatcher.platformBrightness == Brightness.light ? Color(0xff00bfff) : Colors.white,
+                    child: Tab(icon: Icon(Icons.cloud, color: View.of(context).platformDispatcher.platformBrightness == Brightness.light ? Colors.grey : Color(
+                        0xffbee6ff),)),
                   ),
                 ],
               ),
