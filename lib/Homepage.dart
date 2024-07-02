@@ -68,8 +68,8 @@ class _HomePage extends State<HomePage> with SingleTickerProviderStateMixin, Wid
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.white.withOpacity(0.8),
-          title: Text("Exit"),
-          content: Text("Are you sure you want to exit?"),
+          title: Text("Exit", style: TextStyle(color: Colors.black),),
+          content: Text("Are you sure you want to exit?", style: TextStyle(color: Colors.black),),
           actions: [
             TextButton(
               child: Text("Cancel",
