@@ -161,7 +161,7 @@ class _WeatherWidgetState extends State<WeatherWidget>
       ),
       body: Container(
         child: Stack(children: [
-          Container(
+          SingleChildScrollView(child: Container(
             child: Column(
               children: [
                 Column(
@@ -198,7 +198,7 @@ class _WeatherWidgetState extends State<WeatherWidget>
                                             text: TextSpan(
                                                 text: '${weather.cityName}',
                                                 style: TextStyle(
-                                                  fontSize: 40,
+                                                  fontSize: size.height * 0.05,
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.white,
                                                 )),
@@ -242,7 +242,7 @@ class _WeatherWidgetState extends State<WeatherWidget>
                                     ]),
                                   ],
                                 ),
-                                SizedBox(height: size.height * 0.115),
+                                SizedBox(height: size.height * 0.1),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -250,7 +250,7 @@ class _WeatherWidgetState extends State<WeatherWidget>
                                         '${(weather.temperature - 273.15)
                                             .toStringAsFixed(0)}°',
                                         style: TextStyle(
-                                          fontSize: 70,
+                                          fontSize: size.height * 0.1,
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                         )),
@@ -264,24 +264,24 @@ class _WeatherWidgetState extends State<WeatherWidget>
                                     //Image.network(weather.iconUrl),
                                     Text('${weather.description}',
                                         style: TextStyle(
-                                          fontSize: 23,
+                                          fontSize: size.height * 0.03,
                                           color: Colors.white,
                                         )),
                                     SizedBox(height: 10),
                                     Text('humidity: ${weather.humidity}%',
                                         style: TextStyle(
-                                            fontSize: 20, color: Colors.white)),
+                                            fontSize: size.height * 0.02, color: Colors.white)),
                                     Text(
                                         'sunrise: ${formatTimeStamp(
                                             weather.sunrise,
                                             weather.timeZone)}',
                                         style: TextStyle(
-                                            fontSize: 20, color: Colors.white)),
+                                            fontSize: size.height * 0.02, color: Colors.white)),
                                     Text(
                                         'sunset: ${formatTimeStamp(
                                             weather.sunset, weather.timeZone)}',
                                         style: TextStyle(
-                                            fontSize: 20, color: Colors.white))
+                                            fontSize: size.height * 0.02, color: Colors.white))
                                   ],
                                 )
                               ],
@@ -294,7 +294,7 @@ class _WeatherWidgetState extends State<WeatherWidget>
                 ),
               ],
             ),
-          ),
+          ),)
         ]),
       ),
     );
