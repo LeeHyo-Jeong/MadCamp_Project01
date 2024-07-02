@@ -63,6 +63,7 @@ class _ImageViewState extends State<ImageView> {
                   )),
               onPressed: () {
                 Navigator.of(context).pop();
+                _deleteImage(context, currentIndex);
               },
             ),
             TextButton(

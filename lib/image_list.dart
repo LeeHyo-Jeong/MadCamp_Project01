@@ -138,6 +138,7 @@ class _ImageWidgetState extends State<ImageWidget> with AutomaticKeepAliveClient
                     ),
                   ),
         floatingActionButton: FloatingActionButton(
+          heroTag: 'new image from camera',
           onPressed: _pickImageFromCamera,
           shape: CircleBorder(),
           child: Icon(Icons.photo_camera,
