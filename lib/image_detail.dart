@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'dart:typed_data';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:intl/intl.dart';
 
 class ImageView extends StatefulWidget {
@@ -63,7 +62,6 @@ class _ImageViewState extends State<ImageView> {
                       )),
                   onPressed: () {
                     Navigator.of(context).pop();
-                    _deleteImage(context, currentIndex);
                   },
                 ),
                 TextButton(
