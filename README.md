@@ -12,7 +12,9 @@ Spectrum은 연락처, 갤러리, 날씨 탭으로 이루어져 있습니다.
 
 ## 팀원 소개
 
-김원중(KAIST 전산학부 20), 이효정(한양대학교 컴퓨터소프트웨어학부 22)
+- 김원중(KAIST 전산학부 20): [github 프로필](https://github.com/wjhjkim)
+
+- 이효정(한양대학교 컴퓨터소프트웨어학부 22): [github 프로필](https://github.com/LeeHyo-Jeong)
 
 ## 프로젝트 구조
 
