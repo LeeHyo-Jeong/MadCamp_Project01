@@ -42,7 +42,9 @@ Spectrum은 연락처, 갤러리, 날씨 탭으로 이루어져 있습니다.
       
         - 라이브러리: svg.dart, photo_manager.dart, image_picker.dart, draggable_scrollbar.dart
           
-        - 권한: WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE, CAMERA, android.hardware.camera, ACCESS_MEDIA_LOCATION
+        - 권한: WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE, CAMERA,
+        
+                 android.hardware.camera, ACCESS_MEDIA_LOCATION
           
 ### 3. Weather Tab
    
@@ -52,7 +54,9 @@ Spectrum은 연락처, 갤러리, 날씨 탭으로 이루어져 있습니다.
       
     - 사용된 라이브러리 및 사용자 권한
       
-        - 라이브러리: http.dart, cached_network_image.dart, geolocator.dart, intl.dart, timer_builder.dart, flutter_dotenv.dart
+        - 라이브러리: http.dart, cached_network_image.dart, geolocator.dart,
+        
+                       intl.dart, timer_builder.dart, flutter_dotenv.dart
           
         - 권한: ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION
 
