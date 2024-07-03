@@ -132,4 +132,4 @@ Spectrum은 연락처, 갤러리, 날씨 탭으로 이루어져 있습니다.
    1. 사용자는 새로고침 버튼을 클릭해 날씨 정보를 갱신할 수 있습니다.
 
 ## APK 파일
-- link
+- [링크](https://drive.google.com/file/d/1tvJFlmBXO0vkiTiHib-6w0VSDc1PObH3/view?usp=sharing)
