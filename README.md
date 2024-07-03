@@ -23,7 +23,7 @@
     - 현재 GPS 위치 상의 날씨를 보여줍니다.
     - 사용된 라이브러리 및 사용자 권한
         - 라이브러리:
-        - ARSE_LOCATION
+        - 권한: ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION
 
 ---
 
