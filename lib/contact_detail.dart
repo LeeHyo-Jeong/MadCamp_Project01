@@ -4,10 +4,19 @@ import 'package:madcamp_project01/contact_revise.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class ContactDetails extends StatelessWidget {
+class ContactDetails extends StatefulWidget {
   final Contact contact;
 
-  const ContactDetails({super.key, required this.contact});
+  ContactDetails({required this.contact});
+
+  @override
+  _ContactDetailsState createState() => _ContactDetailsState(contact: this.contact);
+}
+
+class _ContactDetailsState extends State<ContactDetails> {
+  final Contact contact;
+
+  _ContactDetailsState({required this.contact});
 
   void _launchPhoneApp() async {
     String? phoneNumber = "tel:" + (contact.phones?.first.value ?? "");
@@ -173,12 +182,15 @@ class ContactDetails extends StatelessWidget {
                   width: 100,
                   child: GestureDetector(
                       onTap: () async {
-                        Navigator.push(
+                        bool? shouldRefresh = await Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
                                   ContactRevise(contact: contact),
                             ));
+                        if (shouldRefresh == true) {
+                          setState(() {});
+                        }
                       },
                       child: Card(
                           shape: RoundedRectangleBorder(
