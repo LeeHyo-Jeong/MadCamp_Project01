@@ -8,22 +8,22 @@
 
 이 앱은 세 개의 탭으로 구성됩니다:
 1. Contacts Tab
-   - 휴대전화에 저장되어 있는 연락처 목록을 보여줍니다.
+   - 휴대전화에 저권한: ACCESS_FINE_LOCATION, ACCESS_CO장되어 있는 연락처 목록을 보여줍니다.
    - 연락처를 추가하거나 수정, 삭제할 수 있습니다.
    - 사용된 라이브러리 및 사용자 권한
-     - 라이브러리: 
-     - 권한: READ_CONTACTS, WRITE_CONTACTS
+       - 라이브러리:
+       - 권한: READ_CONTACTS, WRITE_CONTACTS
 2. Gallery Tab
-   - 휴대전화에 저장되어 있는 사진 목록을 보여줍니다.
-   - 사진을 촬영하거나 삭제할 수 있습니다.
-   - 사용된 라이브러리 및 사용자 권한
-     - 라이브러리: 
-     - 권한: WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE, CAMERA, android.hardware.camera, ACCESS_MEDIA_LOCATION
+    - 휴대전화에 저장되어 있는 사진 목록을 보여줍니다.
+    - 사진을 촬영하거나 삭제할 수 있습니다.
+    - 사용된 라이브러리 및 사용자 권한
+        - 라이브러리:
+        - 권한: WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE, CAMERA, android.hardware.camera, ACCESS_MEDIA_LOCATION
 3. Weather Tab
-   - 현재 GPS 위치 상의 날씨를 보여줍니다.
-   - 사용된 라이브러리 및 사용자 권한
-     - 라이브러리: 
-     - 권한: ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION
+    - 현재 GPS 위치 상의 날씨를 보여줍니다.
+    - 사용된 라이브러리 및 사용자 권한
+        - 라이브러리:
+        - ARSE_LOCATION
 
 ---
 
