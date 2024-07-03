@@ -25,20 +25,32 @@ class _ImageViewState extends State<ImageView> {
     _pageController = PageController(initialPage: widget.initialIndex);
   }
 
+  Future<void> _loadMedia() async {
+    final PermissionState ps = await PhotoManager.requestPermissionExtend();
+    if (ps.isAuth) {
+      List<AssetPathEntity> albums = await PhotoManager.getAssetPathList(type: RequestType.image);
+      final AssetPathEntity album = albums.first;
+      int imageCount = await album.assetCountAsync;
+      List<AssetEntity> media = await album.getAssetListRange(start: 0, end: imageCount);
+    } else {
+      await PhotoManager.openSetting();
+    }
+  }
+
+
   void _deleteImage(BuildContext context, final currentIndex) async {
     List<String> deleted = await PhotoManager.editor
         .deleteWithIds([widget.assets[currentIndex].id]);
     if (deleted.isNotEmpty) {
+      print("**********************");
+      print("isNotEmpty TRUE");
       // 삭제 성공 시 true 반환해서 리스트 갱신하도록 함
-      Navigator.pop(context, true);
-      // 삭제가 되었음을 알리는 toast (알람)
-      Fluttertoast.showToast(
-          msg: "Image deleted !",
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.black87,
-          fontSize: 17,
-          textColor: Colors.white,
-          toastLength: Toast.LENGTH_SHORT);
+      Future.delayed(Duration.zero, () {
+        if (mounted) {
+          Navigator.pop(context, true);
+        }
+      });
+
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to delete the image')),
