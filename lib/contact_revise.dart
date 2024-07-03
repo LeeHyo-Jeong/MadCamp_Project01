@@ -35,7 +35,7 @@ class _ContactReviseState extends State<ContactRevise> {
   @override
   void initState() {
     super.initState();
-    givencontact = Contact.fromMap(widget.contact.toMap()); // 깊은 복사
+    givencontact = widget.contact;
     firstname = givencontact.givenName ?? "";
     lastname = givencontact.familyName ?? "";
     email = givencontact.emails?.isNotEmpty == true
